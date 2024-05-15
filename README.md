@@ -41,9 +41,6 @@ It should be noted that the applications can also be quickly run using Docker. C
 ```bash
 # once Python is successfully installed
 pip install venv
-
-# navigate to the backend directory
-cd solving-pacman-backend
 # create the virtual environment
 python3 -m venv venv
 
@@ -109,13 +106,13 @@ Docker has been utilised to deploy the full-stack application. Docker images for
 When a new version of the application is ready, a new version of the docker images must also be generated. The version of the image must match the version given within the repository, and the `latest` tag should always be used to ensure the pointer is up to date.
 
 ```bash
-docker build . --tag davidkidd/solving-pacman-backend:latest --tag davidkidd/solving-pacman-backend:{new-version-number}
+docker build . --tag davidkidd/pacman-solutions-backend:latest --tag davidkidd/pacman-solutions-backend:{new-version-number}
 ```
 
 ### Running the Image
 
 ```bash
-docker run -p 4000:4000 -d davidkidd/solving-pacman-backend:latest
+docker run -p 4000:4000 -d davidkidd/pacman-solutions-backend:latest
 ```
 
 ## Acknowledgements
@@ -127,6 +124,6 @@ docker run -p 4000:4000 -d davidkidd/solving-pacman-backend:latest
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [docs-link]: https://david-kidd.gitbook.io/ai-solutions-to-pac-man/
-[pre-commit-path]: /solving-pacman-backend/.pre-commit-config.yaml
+[pre-commit-path]: /pacman-solutions-backend/.pre-commit-config.yaml
 [docker-install]: https://docs.docker.com/get-docker/
 [docker-compose-install]: https://docs.docker.com/compose/install/

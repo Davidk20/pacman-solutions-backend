@@ -46,4 +46,4 @@ jobs:
 
       - name: Check Coverage
         run: |
-          interrogate -vv -i -I --fail-under=80 --ignore-magic --exclude solving-pacman-frontend
+          interrogate -vv -i -I --fail-under=80 --ignore-magic

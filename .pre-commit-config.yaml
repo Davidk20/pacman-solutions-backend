@@ -13,6 +13,10 @@ repos:
     rev: v3.12.0
     hooks:
     -   id: reorder-python-imports
+-   repo: https://gitlab.com/bmares/check-json5
+    rev: v1.0.0
+    hooks:
+    - id: check-json5
 -   repo: https://github.com/psf/black
     rev: 23.9.1
     hooks:
@@ -23,17 +27,6 @@ repos:
     hooks:
     -   id: flake8
         args: [--max-line-length=88]
--   repo: https://github.com/econchick/interrogate
-    rev: 1.5.0
-    hooks:
-      - id: interrogate
-        stages: [push]
-        args: [--quiet, -vv, -i, -I, -m, -P, -S, --fail-under=80, --exclude=solving-pacman-frontend]
-        pass_filenames: false
--   repo: https://gitlab.com/bmares/check-json5
-    rev: v1.0.0
-    hooks:
-    - id: check-json5
 -   repo: local
     hooks:
     -   id: pytest
@@ -42,12 +35,4 @@ repos:
         description: Test the backend application with Pytest
         files: \.py$
         language: system
-        entry: bash -c 'cd solving-pacman-backend && poetry run pytest .'
-    -   id: requirements-generate
-        name: Generate Requirements.txt
-        description: Generate requirements.txt for
-        files: \.toml$
-        verbose: true
-        language: system
-        entry: bash -c 'cd solving-pacman-backend && poetry export -o requirements.txt --without-hashes'
-
+        entry: bash -c 'cd functions && source venv/bin/activate && python3 -m pytest .'

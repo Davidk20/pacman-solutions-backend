@@ -1,0 +1,5 @@
+.vscode/
+*.pyc
+junit.xml
+.DS_Store
+venv/

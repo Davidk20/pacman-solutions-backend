@@ -5,13 +5,12 @@ Inspiration taken from:
 
 https://realpython.com/command-line-interfaces-python-argparse/
 """
+
 import argparse
 import sys
 
 from src.scripts.analytics import PacmanAnalytics
-from src.server import server
-from src.services.game_manager import GameManager
-from src.services.game_manager import RunConfiguration
+from src.services.game_manager import GameManager, RunConfiguration
 
 try:
     print("")
@@ -39,10 +38,9 @@ def main():
 
     parser.add_argument(
         "run_config",
-        choices=["server", "local", "analytics"],
+        choices=["single", "analytics"],
         help="""
-        server = Run Flask server,
-        local = Run single game,
+        single = Run single game,
         analytics = Run analytics tool""",
     )
 
@@ -50,7 +48,7 @@ def main():
         "-l", "--level", type=int, help="specify level number as an integer"
     )
 
-    local_options = parser.add_argument_group("Local Script Options")
+    local_options = parser.add_argument_group("Single Run Options")
 
     local_options.add_argument(
         "-v",
@@ -94,8 +92,6 @@ def main():
                 args.level, configuration=RunConfiguration.LOCAL, verbose=args.verbose
             )
             game.game_loop()
-        case "server":
-            server.app.run(host="0.0.0.0", debug=True, port=4000)
         case "analytics":
             PacmanAnalytics(runs=args.runs)
 

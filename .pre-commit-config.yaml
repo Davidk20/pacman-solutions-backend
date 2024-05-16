@@ -18,10 +18,10 @@ repos:
     hooks:
     - id: check-json5
 -   repo: https://github.com/psf/black
-    rev: 23.9.1
+    rev: 24.4.2
     hooks:
     -   id: black
-        args: [--line-length=88]
+        args: [--line-length=88, --check]
 -   repo: https://github.com/PyCQA/flake8
     rev: 6.1.0
     hooks:

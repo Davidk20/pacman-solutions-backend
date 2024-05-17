@@ -4,3 +4,7 @@ junit.xml
 .DS_Store
 venv/
 *.log
+
+# Firebase
+.firebaserc
+firebase.json

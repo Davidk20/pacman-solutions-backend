@@ -94,7 +94,15 @@ pre-commit install --hook-type pre-commit --hook-type pre-push
 With this now configured, a series of jobs will now run upon every commit and push. Commit jobs will consist of linting whilst push jobs involve testing. See [pre-commit-config.yaml][pre-commit-path] for more detailed information.
 
 
-### Firebase Emulator
+### Server
+
+There are two options to work with the functions during development. The correct use case depends on how you want to interact with the functions.
+
+- If you are looking to test the endpoints ability to call code; this can be done with either option
+- If you are looking to test the interaction with firebase services, use the [emulator](#firebase-emulator).
+- If you are looking to test the intergration with a front-end application, use [Flask](#flask)
+
+#### Firebase Emulator
 
 This project uses [Firebase Functions][functions-link], during development, the [Firebase Emulator][firebase-emulator] can be used to develop in a test environment. To setup and use this, follow these steps:
 
@@ -110,6 +118,18 @@ firebase emulators:start --import .env --export-on-exit .env
 The functions endpoints can now be accessed through the following url:
 
 http://localhost:5001/{MY_PROJECT}/us-central1/{ENDPOINT}
+
+#### Flask
+
+To run the flask server, use the runner file:
+
+```bash
+python3 functions/runner.py flask
+```
+
+The flask endpoints can now be accessed through
+
+http://localhost:5001/{ENDPOINT}
 
 ## Deployment
 

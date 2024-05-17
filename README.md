@@ -13,8 +13,7 @@
   <br/>
   <br/>
   <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="python logo"/>
-  <img src="https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" alt="flask logo"/>
-  <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="docker logo"/>
+  <img src="https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase" alt="firebase logo"/>
 </div>
 
 <div align="center" width="50%">
@@ -36,8 +35,6 @@ An artificial intelligence environment enabling users to watch simulated solutio
 
 Below are the instructions required to get the application running locally. Only the back-end is required for a minimum application which will run on the command line, while the front-end is optional to aesthetically render solutions.
 
-It should be noted that the applications can also be quickly run using Docker. Currently, the images are not hosted on a repository and so they must first be built, this can be done using the [Docker Deployment](#deployment) steps.
-
 ```bash
 # once Python is successfully installed
 pip install venv
@@ -57,20 +54,19 @@ Once the environment is setup and activated, the driver script can be run:
 
 ```bash
 ❯ python3 main.py -h
-usage: main.py [-h] [-l LEVEL] [-v] [-d] [-o OUTPUT_FILE] [-r RUNS] {server,local,analytics}
+usage: main.py [-h] [-l LEVEL] [-v] [-d] [-o OUTPUT_FILE] [-r RUNS] {single,analytics}
 
 Pac-Man Solutions - Back-End: AI solutions to abstractions of Pac-Man levels.
 
 positional arguments:
-  {server,local,analytics}
-                        server = Run Flask server, local = Run single game, analytics = Run analytics tool
+  {single,analytics}    single = Run single game, analytics = Run analytics tool
 
 options:
   -h, --help            show this help message and exit
   -l LEVEL, --level LEVEL
                         specify level number as an integer
 
-Local Script Options:
+Single Run Options:
   -v, --verbose         enable verbose output - full final state printing
   -d, --debug           enable debug output - full final state printing + all noteworthy events
 

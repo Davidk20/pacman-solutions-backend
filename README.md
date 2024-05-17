@@ -13,7 +13,7 @@
   <br/>
   <br/>
   <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="python logo"/>
-  <img src="https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" alt="flask logo"/>  
+  <img src="https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" alt="flask logo"/>
   <img src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" alt="docker logo"/>
 </div>
 
@@ -41,9 +41,6 @@ It should be noted that the applications can also be quickly run using Docker. C
 ```bash
 # once Python is successfully installed
 pip install venv
-
-# navigate to the backend directory
-cd solving-pacman-backend
 # create the virtual environment
 python3 -m venv venv
 
@@ -100,22 +97,35 @@ pre-commit install --hook-type pre-commit --hook-type pre-push
 
 With this now configured, a series of jobs will now run upon every commit and push. Commit jobs will consist of linting whilst push jobs involve testing. See [pre-commit-config.yaml][pre-commit-path] for more detailed information.
 
-## Deployment
 
-Docker has been utilised to deploy the full-stack application. Docker images for the front and back-end applications are brought together using a Docker Compose file. Before following these steps, ensure [Docker >= 20.10.23][docker-install] and [Docker Compose >= 3.8][docker-compose-install] are installed correctly.
+### Firebase Emulator
 
-### Publishing a new version
-
-When a new version of the application is ready, a new version of the docker images must also be generated. The version of the image must match the version given within the repository, and the `latest` tag should always be used to ensure the pointer is up to date.
+This project uses [Firebase Functions][functions-link], during development, the [Firebase Emulator][firebase-emulator] can be used to develop in a test environment. To setup and use this, follow these steps:
 
 ```bash
-docker build . --tag davidkidd/solving-pacman-backend:latest --tag davidkidd/solving-pacman-backend:{new-version-number}
+# Initialise Firebase Emulators
+firebase init emulators
+# Start Emulator
+firebase emulators:start
+# OPTIONAL - run the emulator whilst saving state
+firebase emulators:start --import .env --export-on-exit .env
 ```
 
-### Running the Image
+The functions endpoints can now be accessed through the following url:
+
+http://localhost:5001/{MY_PROJECT}/us-central1/{ENDPOINT}
+
+## Deployment
+
+The application uses [Firebase Functions][functions-link]. To deploy, a Firebase project must be initialised using the steps below:
 
 ```bash
-docker run -p 4000:4000 -d davidkidd/solving-pacman-backend:latest
+# Log into Firebase account
+firebase login
+# Initialise Firebase Project
+firebase init
+# Deploy functions
+firebase deploy --only functions
 ```
 
 ## Acknowledgements
@@ -127,6 +137,6 @@ docker run -p 4000:4000 -d davidkidd/solving-pacman-backend:latest
 <!-- MARKDOWN LINKS & IMAGES -->
 
 [docs-link]: https://david-kidd.gitbook.io/ai-solutions-to-pac-man/
-[pre-commit-path]: /solving-pacman-backend/.pre-commit-config.yaml
-[docker-install]: https://docs.docker.com/get-docker/
-[docker-compose-install]: https://docs.docker.com/compose/install/
+[pre-commit-path]: /pacman-solutions-backend/.pre-commit-config.yaml
+[functions-link]: https://firebase.google.com/docs/functions
+[firebase-emulator]: https://firebase.google.com/docs/emulator-suite

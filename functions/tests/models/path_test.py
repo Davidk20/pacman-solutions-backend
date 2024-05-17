@@ -1,7 +1,7 @@
 """Tests for the Path class."""
+
 import pytest
-from src.models import environment
-from src.models import pickups
+from src.models import environment, pickups
 from src.models.node import Node
 from src.models.path import Path
 from tests.mocks.mock_agent_test import mock_ghost

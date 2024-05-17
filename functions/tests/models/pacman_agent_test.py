@@ -1,10 +1,10 @@
 """Tests for the Pac-man Agent."""
+
 import pytest
 from src import exceptions
 from src.models.agents.agent import Agent
 from src.models.agents.pacman_agent import PacmanAgent
-from src.models.pickups import Orange
-from src.models.pickups import PowerPellet
+from src.models.pickups import Orange, PowerPellet
 from tests.mocks.mock_agent_test import mock_ghost
 
 

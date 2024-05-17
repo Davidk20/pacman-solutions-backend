@@ -1,9 +1,7 @@
 from firebase_admin import initialize_app
-from firebase_functions import https_fn
-from firebase_functions import options
+from firebase_functions import https_fn, options
 from flask import jsonify
-from src.services import game_manager
-from src.services import level_handler
+from src.services import game_manager, level_handler
 
 app = initialize_app()
 

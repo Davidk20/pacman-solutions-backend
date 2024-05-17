@@ -1,4 +1,5 @@
 """Collection of objects representing the pickups possible during gameplay."""
+
 from src.models.entity import Entity
 
 

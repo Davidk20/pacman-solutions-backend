@@ -1,4 +1,5 @@
 """Tests for the `GameStateStore`."""
+
 from src.models.game_state import GameState
 from src.models.game_state_store import GameStateStore
 

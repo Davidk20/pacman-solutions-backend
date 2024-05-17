@@ -1,11 +1,10 @@
 """Analytics tool designed to compare the performance of various agents."""
+
 import time
 from typing import Type
 
 from src.models.agents.custom_agents.inactive import InactivePacMan
-from src.models.agents.custom_agents.informed import (
-    InformedPacMan,
-)
+from src.models.agents.custom_agents.informed import InformedPacMan
 from src.models.agents.custom_agents.random import RandomPacMan
 from src.models.agents.pacman_agent import PacmanAgent
 from src.services import game_manager

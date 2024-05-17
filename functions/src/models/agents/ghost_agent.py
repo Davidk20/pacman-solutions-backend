@@ -1,4 +1,5 @@
 """Collection of models representing the Ghosts."""
+
 from random import choice
 
 from src.models.agents.agent import Agent

@@ -1,11 +1,10 @@
 """Model representing a node within a graph."""
-from typing import Type
-from typing import TypeVar
+
+from typing import Type, TypeVar
 
 from src import exceptions
 from src.models.entity import Entity
-from src.models.pickups import Empty
-from src.models.pickups import Pickup
+from src.models.pickups import Empty, Pickup
 
 
 class Node:

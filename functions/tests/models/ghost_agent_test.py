@@ -1,4 +1,5 @@
 """Tests for the Ghost Agent."""
+
 import pytest
 from tests.mocks.mock_agent_test import mock_ghost
 

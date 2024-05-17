@@ -8,6 +8,7 @@ at any one time. Standalone functions mean that the file can be opened
 and closed within the lifetime of a function and also prevents the instantiation
 of a number of unnecessary files.
 """
+
 import json
 import os
 

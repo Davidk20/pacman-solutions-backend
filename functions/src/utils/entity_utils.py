@@ -1,5 +1,4 @@
-from src.models import environment
-from src.models import pickups
+from src.models import environment, pickups
 from src.models.agents import agent
 from src.models.agents.placeholder_agent import PlaceholderAgent
 

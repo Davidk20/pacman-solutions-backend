@@ -1,4 +1,5 @@
 """Mock values for agents."""
+
 from src.models.agents.ghost_agent import GhostAgent
 from src.models.movement_types import MovementTypes
 

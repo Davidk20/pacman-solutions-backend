@@ -1,10 +1,10 @@
 """Model representing the agent for Pac-man."""
+
 from src import exceptions
 from src.models.agents.agent import Agent
 from src.models.graph import Graph
 from src.models.movement_types import MovementTypes
-from src.models.pickups import Pickup
-from src.models.pickups import PowerPellet
+from src.models.pickups import Pickup, PowerPellet
 
 
 class PacmanAgent(Agent):

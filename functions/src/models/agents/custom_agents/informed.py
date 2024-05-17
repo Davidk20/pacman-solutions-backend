@@ -1,4 +1,5 @@
 """Model representing the informed randomised Pac-Man behaviour"""
+
 from random import choice
 
 from src.models.agents.pacman_agent import PacmanAgent

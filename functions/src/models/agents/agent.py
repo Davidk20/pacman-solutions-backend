@@ -12,8 +12,8 @@ follow the agent cycle:
 
 https://github.com/dicelab-rhul/vacuumworld
 """
-from abc import ABC
-from abc import abstractmethod
+
+from abc import ABC, abstractmethod
 
 from src.models.entity import Entity
 from src.models.graph import Graph

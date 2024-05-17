@@ -1,4 +1,5 @@
 """File containing a set of models linking JSON objects to data types."""
+
 from typing import TypedDict
 
 

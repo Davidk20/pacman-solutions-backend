@@ -1,4 +1,5 @@
 """Mocks for the graph."""
+
 from src.models.graph import Graph
 from src.services import level_handler
 from src.utils import level_utils

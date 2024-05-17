@@ -1,4 +1,5 @@
 """Enum containing the types of movement possible for agents."""
+
 from enum import Enum
 
 

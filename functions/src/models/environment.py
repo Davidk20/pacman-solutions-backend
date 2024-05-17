@@ -1,4 +1,5 @@
 """Models representing the environment."""
+
 from src.models.entity import Entity
 
 

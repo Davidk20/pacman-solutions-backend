@@ -1,6 +1,5 @@
 import pytest
-from src.models import environment
-from src.models import pickups
+from src.models import environment, pickups
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.node import Node

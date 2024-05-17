@@ -1,4 +1,5 @@
 """Tests on the level utility functions."""
+
 from src.services import level_handler
 from src.utils import level_utils
 from tests.mocks.mock_graph_test import mock_graph

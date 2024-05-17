@@ -1,14 +1,17 @@
 """Tests for the pickups in the game."""
-from src.models.pickups import Apple
-from src.models.pickups import Bell
-from src.models.pickups import Cherry
-from src.models.pickups import Galaxian
-from src.models.pickups import Key
-from src.models.pickups import Melon
-from src.models.pickups import Orange
-from src.models.pickups import PacDot
-from src.models.pickups import PowerPellet
-from src.models.pickups import Strawberry
+
+from src.models.pickups import (
+    Apple,
+    Bell,
+    Cherry,
+    Galaxian,
+    Key,
+    Melon,
+    Orange,
+    PacDot,
+    PowerPellet,
+    Strawberry,
+)
 
 
 def test_get_score():

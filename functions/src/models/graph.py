@@ -1,11 +1,11 @@
 """Model representing the level as a graph data structure."""
+
 import random
 from typing import Type
 
 from src import exceptions
 from src.models.entity import Entity
-from src.models.environment import Gate
-from src.models.environment import Teleporter
+from src.models.environment import Gate, Teleporter
 from src.models.node import Node
 from src.models.path import Path
 from src.models.pickups import Pickup

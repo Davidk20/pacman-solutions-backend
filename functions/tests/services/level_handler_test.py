@@ -1,4 +1,5 @@
 """Tests for the LevelHandler."""
+
 import pytest
 from src.exceptions import LevelNotFoundException
 from src.services import level_handler

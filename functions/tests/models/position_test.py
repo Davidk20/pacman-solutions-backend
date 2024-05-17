@@ -1,4 +1,5 @@
 """Tests for the Position class."""
+
 from src.models.position import Position
 
 

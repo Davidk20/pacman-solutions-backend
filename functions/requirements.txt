@@ -71,7 +71,7 @@ pycodestyle==2.11.1
 pycparser==2.22
 pydocstyle==6.3.0
 pydocstyle-gitlab-code-quality==0.0.1
-pyflakes==3.1.0
+pyflakes==3.2.0
 PyJWT==2.8.0
 pyparsing==3.1.2
 pytest==7.4.4

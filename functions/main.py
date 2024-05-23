@@ -9,7 +9,11 @@ initialize_app()
 app = Flask(__name__)
 CORS(app)
 
-approved = [r"pacman\.davidkidd\.dev$", r"https://pacman\.davidkidd\.dev"]
+approved = [
+    r"pacman\.davidkidd\.dev",
+    r"https://pacman\.davidkidd\.dev",
+    r"https://pac-man-solutions\.web\.app",
+]
 
 
 @https_fn.on_request(

@@ -9,6 +9,7 @@ https://realpython.com/command-line-interfaces-python-argparse/
 import argparse
 import sys
 
+from main import app
 from src.scripts.analytics import PacmanAnalytics
 from src.services.game_manager import GameManager, RunConfiguration
 
@@ -30,7 +31,7 @@ class ArgParser(argparse.ArgumentParser):
 
 def main():
     parser = ArgParser(
-        prog="main.py",
+        prog="runner.py",
         description="""
         Pac-Man Solutions - Back-End: AI solutions to abstractions of Pac-Man levels.
         """,
@@ -38,9 +39,10 @@ def main():
 
     parser.add_argument(
         "run_config",
-        choices=["single", "analytics"],
+        choices=["single", "flask", "analytics"],
         help="""
         single = Run single game,
+        flask = Run the Flask dev server,
         analytics = Run analytics tool""",
     )
 
@@ -92,6 +94,8 @@ def main():
                 args.level, configuration=RunConfiguration.LOCAL, verbose=args.verbose
             )
             game.game_loop()
+        case "flask":
+            app.run(debug=True, port=5001)
         case "analytics":
             PacmanAnalytics(runs=args.runs)
 

@@ -89,7 +89,7 @@ def main():
     args = parser.parse_args()
 
     match args.run_config:
-        case "local":
+        case "single":
             game = GameManager(
                 args.level, configuration=RunConfiguration.LOCAL, verbose=args.verbose
             )

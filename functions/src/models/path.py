@@ -1,6 +1,8 @@
-from src.models import pickups
 from src.models.environment import EnvironmentEntity
 from src.models.node import Node
+
+from src import exceptions
+from src.models import pickups
 
 
 class Path:
@@ -70,9 +72,10 @@ class Path:
         """
         score = 0
         for node in self.route:
-            if not node.empty():
-                if isinstance(node.get_lower_entity(), pickups.Pickup):
-                    score += node.get_lower_entity().score()
+            try:
+                score += node.get_entity(pickups.Pickup).score()
+            except exceptions.InvalidNodeException:
+                pass
         return score
 
     def get_next_pos(self) -> Node:

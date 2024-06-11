@@ -1,10 +1,11 @@
 """Model representing the agent for Pac-man."""
 
-from src import exceptions
 from src.models.agents.agent import Agent
 from src.models.graph import Graph
 from src.models.movement_types import MovementTypes
 from src.models.pickups import Pickup, PowerPellet
+
+from src import exceptions
 
 
 class PacmanAgent(Agent):
@@ -51,9 +52,10 @@ class PacmanAgent(Agent):
 
     def __repr__(self) -> str:
         return (
-            f"(Name: {self.name()}, Current Score: {self.score()},"
-            f" Lives: {self.current_lives}, Energized: {self.energized}, "
-            f"Ghosts Consumed: {self.temp_ghost_counter})"
+            f"(Name: {self.name()}, Current Score: {self.score()}, "
+            f"Lives: {self.current_lives}, Energized: {self.energized}, "
+            f"Ghosts Consumed: {self.temp_ghost_counter}), "
+            f"Position: {self.position}"
         )
 
     def increase_score(self, score: int) -> None:

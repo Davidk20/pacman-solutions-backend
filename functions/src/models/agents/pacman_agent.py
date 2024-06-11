@@ -49,6 +49,7 @@ class PacmanAgent(Agent):
         Counter to store the number of ghosts that Pac-man has consumed during
         a single energizer run
         """
+        self.time_since_energised = 0
 
     def __repr__(self) -> str:
         return (
@@ -91,10 +92,19 @@ class PacmanAgent(Agent):
         if not isinstance(pickup, Agent):
             self.increase_score(pickup.score())
 
+    def handle_energised(self):
+        """Handles the logic surrounding Pac-Man's energised state."""
+        if not self.energized:
+            return
+        if self.time_since_energised == 7:
+            self.deenergize()
+        self.time_since_energised += 1
+
     def deenergize(self):
         """Restore Pac-man agent to a de-energized state."""
         self.energized = False
         self.temp_ghost_counter = 0
+        self.time_since_energised = 0
 
     def _perceive(self, time: int, level: Graph) -> None:
         raise NotImplementedError

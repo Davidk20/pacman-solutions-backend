@@ -3,12 +3,13 @@
 import random
 from typing import Type
 
-from src import exceptions
 from src.models.entity import Entity
 from src.models.environment import Gate, Teleporter
 from src.models.node import Node
 from src.models.path import Path
 from src.models.pickups import Pickup
+
+from src import exceptions
 
 
 class Graph:
@@ -94,7 +95,7 @@ class Graph:
         """
         return random.choice(self.nodes())
 
-    def is_junction(self, node: Node, prev_pos: tuple[int, int]) -> bool:
+    def is_junction(self, node: Node) -> bool:
         """
         Checks whether the node is a junction.
 
@@ -111,8 +112,7 @@ class Graph:
         `bool`
             `True` if the `Node` is a junction
         """
-        prev_node = self.find_node_by_pos(prev_pos)
-        return len([node for node in self.level[node] if node != prev_node]) > 1
+        return len(self.level[node]) > 2
 
     def get_adjacent(self, node: Node) -> list[Node]:
         """
@@ -396,7 +396,7 @@ class Graph:
 
     def find_path_to_next_jct(self, start_pos: tuple[int, int]) -> list[Path]:
         """
-        Generate a path from the current position to the next closest junction.
+        Find all paths between the current position and the surrounding junctions.
 
         This function implements a similar BFS algorithm to `find_paths_between`,
         however the goal state in this instance is for the target node to be a
@@ -417,20 +417,23 @@ class Graph:
         paths: list[Path] = []
         while len(queue) > 0:
             current, path = queue.pop(0)
-            if self.is_junction(current, path[-1].position):
+            if not self.is_junction(current):
+                pass
+
+            if not Path(path).is_loop():
                 paths.append(Path(path))
-                if len(paths) == 5:
-                    # break when enough paths found
+
+            if len(paths) == 10:
+                # break when enough paths found
+                break
+            if len(path) > 12:
+                if len(paths) == 0:
+                    # raise error if path is too long
+                    raise exceptions.PathNotFoundException(start_node.position)
+                else:
                     break
-                if len(path) > 12:
-                    if len(paths) == 0:
-                        # raise error if path is too long
-                        raise exceptions.PathNotFoundException(start_node.position)
-                    else:
-                        break
 
             for node in self.level[current]:
                 if node not in path and not node.contains(Gate):
                     queue.append((node, path + [node]))
-
         return paths

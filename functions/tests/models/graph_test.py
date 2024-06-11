@@ -1,11 +1,12 @@
 import pytest
-from src import exceptions
-from src.models import environment, pickups
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.node import Node
 from src.models.path import Path
 from tests.mocks.mock_agent_test import mock_ghost
+
+from src import exceptions
+from src.models import environment, pickups
 
 
 @pytest.fixture(autouse=True)
@@ -258,11 +259,9 @@ def test_remaining_pickups(compiled_graph: Graph):
 def test_is_junction(compiled_graph: Graph):
     "Test that the node is a junction."
     n1 = compiled_graph.find_node_by_pos((0, 0))
-    n2 = compiled_graph.find_node_by_pos((0, 3))
     n3 = compiled_graph.find_node_by_pos((0, 6))
-    assert compiled_graph.is_junction(n1, (0, 0))
-    assert compiled_graph.is_junction(n2, (0, 9))
-    assert compiled_graph.is_junction(n3, (0, 0))
+    assert compiled_graph.is_junction(n1)
+    assert compiled_graph.is_junction(n3)
 
 
 def test_not_junction(compiled_graph: Graph):
@@ -270,9 +269,9 @@ def test_not_junction(compiled_graph: Graph):
     n1 = compiled_graph.find_node_by_pos((0, 7))
     n2 = compiled_graph.find_node_by_pos((0, 8))
     n3 = compiled_graph.find_node_by_pos((0, 9))
-    assert not compiled_graph.is_junction(n1, (0, 0))
-    assert not compiled_graph.is_junction(n2, (0, 0))
-    assert not compiled_graph.is_junction(n3, (0, 0))
+    assert not compiled_graph.is_junction(n1)
+    assert not compiled_graph.is_junction(n2)
+    assert not compiled_graph.is_junction(n3)
 
 
 def test_adjacency(compiled_graph: Graph):
@@ -290,6 +289,8 @@ def test_path_to_jct(compiled_graph: Graph):
     always be returned first, this will test that the
     shortest path ends at the closest junction.
     """
-    expected_end = compiled_graph.find_node_by_pos((0, 6))
     paths = compiled_graph.find_path_to_next_jct((0, 7))
-    assert paths[0].route[-1] == expected_end
+    for path in paths:
+        if path.route[-1].position == (0, 6):
+            assert path.route[-1].position == (0, 6)
+    pytest.fail

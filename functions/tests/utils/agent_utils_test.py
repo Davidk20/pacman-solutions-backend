@@ -1,10 +1,11 @@
 import pytest
-from src.models import environment, pickups
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.node import Node
-from src.utils import agent_utils
 from tests.mocks.mock_agent_test import mock_ghost
+
+from src.models import environment, pickups
+from src.utils import agent_utils
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -49,6 +50,6 @@ def graph():
 
 def test_random_turn(graph: Graph):
     """Test that a random choice of turn can be obtained."""
-    n1 = graph.find_node_by_pos((0, 2))
-    actual = agent_utils.choose_random_turn(graph, n1, (0, 0))
+    n1 = graph.find_node_by_pos((0, 0))
+    actual = agent_utils.choose_random_turn(graph, n1)
     assert isinstance(actual, Node) and actual in graph.get_adjacent(n1)

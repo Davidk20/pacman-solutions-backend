@@ -1,5 +1,3 @@
-"""Model representing the informed randomised Pac-Man behaviour"""
-
 from random import choice
 
 from src.models.agents.pacman_agent import PacmanAgent
@@ -24,14 +22,10 @@ class InformedPacMan(PacmanAgent):
     def _perceive(self, time: int, level: Graph) -> None:
         current_node = level.find_node_by_pos(self.position)
         if (
-            (
-                len(self.move_history) > 0
-                and not level.is_junction(current_node, self.move_history[-1])
-            )
-            and self.path.is_safe()
+            not level.is_junction(current_node)
             and len(self.path) > 0
+            and self.path.is_safe()
         ):
-            # If the current path is valid then stay on this path
             return
 
         # Get all paths to next jct
@@ -43,10 +37,12 @@ class InformedPacMan(PacmanAgent):
         # prune paths where the end point == starting point
         valid_paths = [path for path in valid_paths if not path.is_loop()]
         backwards_paths = valid_paths
-        if len(self.move_history) > 1:
+        if len(self.move_history) > 2:
             # Remove any paths which would take the agent backwards
             valid_paths = [
-                path for path in valid_paths if path.route[0] != self.move_history[-1]
+                path
+                for path in valid_paths
+                if path.route[1].position != self.move_history[-2]
             ]
 
         # choose a safe path to follow
@@ -57,13 +53,11 @@ class InformedPacMan(PacmanAgent):
             self.path: Path = sorted_paths[0]
         # If no safe paths exist, allow backwards paths.
         elif len(backwards_paths) > 0:
-            print("using this")
             self.path = choice(backwards_paths)
         else:
             # If no safe path is found, choose the best scoring path
             # so that highest score can be obtained before death.
-            sorted_paths = sorted(paths, key=lambda path: path.cost(), reverse=True)
-            self.path: Path = sorted_paths[0]
+            self.path = max(paths, key=lambda path: path.cost())
         # remove current pos from path to prevent static glitch
         self.path.get_next_pos()
 

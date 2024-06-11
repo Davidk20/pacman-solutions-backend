@@ -21,9 +21,22 @@ class RandomPacMan(PacmanAgent):
         super().__init__(home_path, respawn_point)
 
     def _perceive(self, time: int, level: Graph) -> None:
+        current_node = level.find_node_by_pos(self.position)
+
+        # If the current path is valid then stay on this path
+        if not level.is_junction(current_node) and len(self.path) > 0:
+            return
+
         all_paths = level.find_path_to_next_jct(self.position)
         # prune paths where the path only contains the target.
         valid_paths = [path for path in all_paths if len(path) > 2]
+        if len(self.move_history) > 2:
+            # Remove any paths which would take the agent backwards
+            valid_paths = [
+                path
+                for path in valid_paths
+                if path.route[1].position != self.move_history[-2]
+            ]
         self.path = choice(valid_paths)
         if self.path.route[0].position == self.position:
             # if the path contains the current pos it must be removed from the list

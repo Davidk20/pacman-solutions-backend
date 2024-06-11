@@ -1,6 +1,7 @@
+import random
+
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
-from src.models.path import Path
 
 
 class GreedyPacMan(PacmanAgent):
@@ -18,11 +19,15 @@ class GreedyPacMan(PacmanAgent):
         super().__init__(home_path, respawn_point)
 
     def _perceive(self, time: int, level: Graph) -> None:
+        current_node = level.find_node_by_pos(self.position)
+        # If the current path is valid then stay on this path
+        if not level.is_junction(current_node) and len(self.path) > 0:
+            return
         # Get all paths to next jct
         paths = level.find_path_to_next_jct(self.position)
-        paths = [path for path in paths if not path.is_loop()]
-        sorted_paths = sorted(paths, key=lambda path: path.cost(), reverse=True)
-        self.path: Path = sorted_paths[0]
+        max_cost = max(path.cost() for path in paths)
+        max_cost_paths = [path for path in paths if path.cost() == max_cost]
+        self.path = random.choice(max_cost_paths)
         # remove current pos from path to prevent static glitch
         self.path.get_next_pos()
 

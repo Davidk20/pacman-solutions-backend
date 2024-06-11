@@ -77,6 +77,7 @@ class Agent(ABC, Entity):
             f"Behaviour: {self.behaviour}, "
             f"Movement: {self.movement_type}), "
             f"Target: {self.target}), "
+            f"Position: {self.position}"
         )
 
     @abstractmethod

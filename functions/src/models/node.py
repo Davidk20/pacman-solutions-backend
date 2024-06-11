@@ -2,9 +2,10 @@
 
 from typing import Type, TypeVar
 
-from src import exceptions
 from src.models.entity import Entity
 from src.models.pickups import Empty, Pickup
+
+from src import exceptions
 
 
 class Node:
@@ -63,7 +64,7 @@ class Node:
 
     def is_collision(self) -> bool:
         """Returns `True` if there is a collision in this `Node`."""
-        return len(self.entities) == 2
+        return len(self.entities) >= 2
 
     def contains(self, entity_type: Type[Entity]) -> bool:
         """Returns `True` if the `Node` contains an entity of the provided type."""

@@ -1,12 +1,11 @@
 import pytest
+from src.models import environment, pickups
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.node import Node
 from src.models.position import Position
 from src.utils import agent_utils
 from tests.mocks.mock_agent_test import mock_ghost
-
-from functions.src.models import environment, pickups
 
 
 @pytest.fixture(scope="function", autouse=True)

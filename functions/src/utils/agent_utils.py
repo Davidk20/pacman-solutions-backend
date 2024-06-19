@@ -2,16 +2,17 @@
 
 from random import choice
 
+from src import exceptions
 from src.models.graph import Graph
 from src.models.node import Node
 from src.models.path import Path
 
-from src import exceptions
+from functions.src.models.position import Position
 
 
 def gen_random_path(
-    state: Graph, current_pos: tuple[int, int], move_history: list[tuple[int, int]]
-) -> tuple[list[tuple[int, int]], Path]:
+    state: Graph, current_pos: Position, move_history: list[Position]
+) -> tuple[list[Position], Path]:
     """
     Generate a random path given the context of the current state.
 
@@ -19,13 +20,13 @@ def gen_random_path(
     ----------
     `state` : `Graph`
         The full game board.
-    `current_pos` : `tuple[int, int]`
+    `current_pos` : `Position`
         The agents current position.
-    `move_history` : `list[tuple[int, int]]`
+    `move_history` : `list[Position]`
 
     Returns
     -------
-    `tuple[list[tuple[int, int]], Path]`
+    `tuple[list[Position], Path]`
         A tuple containing the list of targets and the path to the first target.
     """
     target = []

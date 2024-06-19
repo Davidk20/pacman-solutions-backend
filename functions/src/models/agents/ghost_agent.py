@@ -7,6 +7,7 @@ from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.movement_types import MovementTypes
 from src.models.path import Path
+from src.models.position import Position
 
 
 class GhostAgent(Agent):
@@ -25,9 +26,9 @@ class GhostAgent(Agent):
         name: str,
         behaviour: str,
         movement_type: MovementTypes,
-        home_path: list[tuple[int, int]],
+        home_path: list[Position],
         value: int,
-        respawn_point: tuple[int, int],
+        respawn_point: Position,
         score: int = 0,
     ):
         super().__init__(
@@ -85,7 +86,7 @@ class GhostAgent(Agent):
                 # The path contains the current pos which must be popped from the list
                 self.path.get_next_pos()
 
-    def _execute(self) -> tuple[int, int]:
+    def _execute(self) -> Position:
         match self.movement_type:
             case MovementTypes.CHASE | MovementTypes.SCATTER | MovementTypes.FRIGHTENED:
                 return self.path.get_next_pos().position
@@ -106,7 +107,7 @@ class BlinkyAgent(GhostAgent):
     position.
     """
 
-    def __init__(self, homes: list[tuple[int, int]], respawn_point: tuple[int, int]):
+    def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Blinky", "Shadow", MovementTypes.CHASE, homes, 21, respawn_point, 200
         )
@@ -116,7 +117,7 @@ class BlinkyAgent(GhostAgent):
 
 
 class PinkyAgent(GhostAgent):
-    def __init__(self, homes: list[tuple[int, int]], respawn_point: tuple[int, int]):
+    def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Pinky", "Speedy", MovementTypes.HOMEBOUND, homes, 22, respawn_point, 200
         )
@@ -130,7 +131,7 @@ class PinkyAgent(GhostAgent):
 
 
 class InkyAgent(GhostAgent):
-    def __init__(self, homes: list[tuple[int, int]], respawn_point: tuple[int, int]):
+    def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Inky", "Bashful", MovementTypes.HOMEBOUND, homes, 23, respawn_point, 200
         )
@@ -143,7 +144,7 @@ class InkyAgent(GhostAgent):
 
 
 class ClydeAgent(GhostAgent):
-    def __init__(self, homes: list[tuple[int, int]], respawn_point: tuple[int, int]):
+    def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Clyde", "Pokey", MovementTypes.HOMEBOUND, homes, 24, respawn_point, 200
         )

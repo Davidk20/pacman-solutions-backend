@@ -2,6 +2,7 @@ import random
 
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
+from src.models.position import Position
 
 
 class GreedyPacMan(PacmanAgent):
@@ -13,9 +14,7 @@ class GreedyPacMan(PacmanAgent):
     take place is to remove any game-breaking paths such as stationary routes.
     """
 
-    def __init__(
-        self, home_path: list[tuple[int, int]], respawn_point: tuple[int, int]
-    ):
+    def __init__(self, home_path: list[Position], respawn_point: Position):
         super().__init__(home_path, respawn_point)
 
     def _perceive(self, time: int, level: Graph) -> None:
@@ -31,7 +30,7 @@ class GreedyPacMan(PacmanAgent):
         # remove current pos from path to prevent static glitch
         self.path.get_next_pos()
 
-    def _execute(self) -> tuple[int, int]:
+    def _execute(self) -> Position:
         move = self.path.get_next_pos().position
         self.move_history.append(move)
         return move

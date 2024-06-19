@@ -1,5 +1,6 @@
 from src.models.agents.agent import Agent
 from src.models.movement_types import MovementTypes
+from src.models.position import Position
 
 
 class PlaceholderAgent(Agent):
@@ -21,5 +22,5 @@ class PlaceholderAgent(Agent):
     def _perceive(self, time: int, level: list[list[int]]) -> None:
         raise NotImplementedError
 
-    def _execute(self) -> tuple[int, int]:
+    def _execute(self) -> Position:
         raise NotImplementedError

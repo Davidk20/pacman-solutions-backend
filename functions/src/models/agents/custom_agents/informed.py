@@ -3,6 +3,7 @@ from random import choice
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.path import Path
+from src.models.position import Position
 
 
 class InformedPacMan(PacmanAgent):
@@ -14,9 +15,7 @@ class InformedPacMan(PacmanAgent):
     choose a new position as target.
     """
 
-    def __init__(
-        self, home_path: list[tuple[int, int]], respawn_point: tuple[int, int]
-    ):
+    def __init__(self, home_path: list[Position], respawn_point: Position):
         super().__init__(home_path, respawn_point)
 
     def _perceive(self, time: int, level: Graph) -> None:
@@ -61,7 +60,7 @@ class InformedPacMan(PacmanAgent):
         # remove current pos from path to prevent static glitch
         self.path.get_next_pos()
 
-    def _execute(self) -> tuple[int, int]:
+    def _execute(self) -> Position:
         move = self.path.get_next_pos().position
         self.move_history.append(move)
         return move

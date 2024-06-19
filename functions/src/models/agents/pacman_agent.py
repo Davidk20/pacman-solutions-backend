@@ -1,11 +1,12 @@
 """Model representing the agent for Pac-man."""
 
+from src import exceptions
 from src.models.agents.agent import Agent
 from src.models.graph import Graph
 from src.models.movement_types import MovementTypes
 from src.models.pickups import Pickup, PowerPellet
 
-from src import exceptions
+from functions.src.models.position import Position
 
 
 class PacmanAgent(Agent):
@@ -23,15 +24,13 @@ class PacmanAgent(Agent):
     https://www.classicgaming.cc/classics/pac-man/play-guide
     """
 
-    def __init__(
-        self, home_path: list[tuple[int, int]], respawn_point: tuple[int, int]
-    ):
+    def __init__(self, home_path: list[Position], respawn_point: Position):
         """
         Initialise the class.
 
         Parameters
         ----------
-        `home_path` : `list[tuple[int, int]]`
+        `home_path` : `list[Position]`
             The agents's home path.
         """
         super().__init__(
@@ -109,5 +108,5 @@ class PacmanAgent(Agent):
     def _perceive(self, time: int, level: Graph) -> None:
         raise NotImplementedError
 
-    def _execute(self) -> tuple[int, int]:
+    def _execute(self) -> Position:
         raise NotImplementedError

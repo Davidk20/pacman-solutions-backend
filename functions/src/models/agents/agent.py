@@ -19,6 +19,7 @@ from src.models.entity import Entity
 from src.models.graph import Graph
 from src.models.movement_types import MovementTypes
 from src.models.path import Path
+from src.models.position import Position
 
 
 class Agent(ABC, Entity):
@@ -29,9 +30,9 @@ class Agent(ABC, Entity):
         name: str,
         behaviour: str,
         movement_type: MovementTypes,
-        home_path: list[tuple[int, int]],
+        home_path: list[Position],
         value: int,
-        respawn_point: tuple[int, int],
+        respawn_point: Position,
         score: int = 0,
     ):
         """
@@ -45,7 +46,7 @@ class Agent(ABC, Entity):
             The agents behaviour.
         `movement_type` : `MovementTypes`
             The agent's movement behaviours.
-        `home_path` : `list[tuple[int, int]]`
+        `home_path` : `list[Position]`
             The agents's home path.
         `value` : `int`
             The agent's representation within the array.
@@ -60,13 +61,13 @@ class Agent(ABC, Entity):
         """The agents Movement type"""
         self.home_path = home_path
         """The agents's home path."""
-        self.position: tuple[int, int]
+        self.position: Position
         """The position of the agent."""
-        self.target: list[tuple[int, int]] = []
+        self.target: list[Position] = []
         """The target path for the agent to follow."""
-        self.move_history: list[tuple[int, int]] = []
+        self.move_history: list[Position] = []
         """Stores the agents move history."""
-        self.respawn_point: tuple[int, int] = respawn_point
+        self.respawn_point: Position = respawn_point
         """The point the agent should respawn to."""
         self.path: Path = Path([])
         """The path the agent is following."""
@@ -93,7 +94,7 @@ class Agent(ABC, Entity):
         raise NotImplementedError
 
     @abstractmethod
-    def _execute(self) -> tuple[int, int]:
+    def _execute(self) -> Position:
         """
         Returns the position which the `Agent` should move to.
 
@@ -105,7 +106,7 @@ class Agent(ABC, Entity):
         """
         raise NotImplementedError
 
-    def cycle(self, time: int, level: Graph) -> tuple[int, int]:
+    def cycle(self, time: int, level: Graph) -> Position:
         """
         Method encapsulating the entire agent cycle.
 

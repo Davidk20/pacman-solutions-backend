@@ -2,6 +2,8 @@
 
 from typing import TypedDict
 
+from src.models.position import Position
+
 
 class LevelData(TypedDict):
     """Typed representation of a level as stored in levels.json"""
@@ -15,18 +17,18 @@ class LevelData(TypedDict):
 class AgentHomes(TypedDict):
     """Typed representation of the agents home paths data structure."""
 
-    pacman: list[tuple[int, int]]
-    blinky: list[tuple[int, int]]
-    pinky: list[tuple[int, int]]
-    inky: list[tuple[int, int]]
-    clyde: list[tuple[int, int]]
+    pacman: list[Position]
+    blinky: list[Position]
+    pinky: list[Position]
+    inky: list[Position]
+    clyde: list[Position]
 
 
 class AgentRespawn(TypedDict):
     """Typed representation of the agents respawn points."""
 
-    pacman: tuple[int, int]
-    blinky: tuple[int, int]
-    pinky: tuple[int, int]
-    inky: tuple[int, int]
-    clyde: tuple[int, int]
+    pacman: Position
+    blinky: Position
+    pinky: Position
+    inky: Position
+    clyde: Position

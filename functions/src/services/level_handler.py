@@ -14,6 +14,7 @@ import os
 
 from src import exceptions
 from src.models import data_types
+from src.models.position import Position
 
 
 def get_levels():
@@ -99,10 +100,10 @@ def get_homes(level_num: int) -> data_types.AgentHomes:
     """
     level: data_types.LevelData = get_level(level_num)
     homes: dict[str, list[list[int]]] = level.get("homes")
-    formatted_homes: dict[str, list[tuple[int, int]]] = {}
+    formatted_homes: dict[str, list[Position]] = {}
     if homes is not None:
         for agent, home in homes.items():
-            path: list[tuple[int, int]] = []
+            path: list[Position] = []
             for coord in home:
                 # Ignored type as it is a determined number of args for tuple.
                 path.append(tuple([coord[0], coord[1]]))  # type: ignore
@@ -112,7 +113,7 @@ def get_homes(level_num: int) -> data_types.AgentHomes:
         raise exceptions.InvalidLevelConfigurationException(level_num)
 
 
-def get_home(level_num: int, agent: str) -> list[tuple[int, int]]:
+def get_home(level_num: int, agent: str) -> list[Position]:
     """
     Returns the home path for a given agent.
 
@@ -129,7 +130,7 @@ def get_home(level_num: int, agent: str) -> list[tuple[int, int]]:
     follow when returning "home".
     """
     homes = get_homes(level_num)
-    home: list[tuple[int, int]] = []
+    home: list[Position] = []
     agent_home = homes[agent.lower()]
     if agent_home is not None:
         for coord in agent_home:
@@ -156,11 +157,11 @@ def get_respawn_points(level_num: int) -> data_types.AgentRespawn:
     """
     level: data_types.LevelData = get_level(level_num)
     points: dict[str, list[list[int]]] = level.get("respawn")
-    formatted_points: dict[str, tuple[int, int]] = {}
+    formatted_points: dict[str, Position] = {}
 
     if points is not None:
         for agent, point in points.items():
-            formatted_points[agent] = tuple([point[0], point[1]])  # type: ignore
+            formatted_points[agent] = Position(point[0], point[1])  # type: ignore
         return formatted_points  # type: ignore
     else:
         raise exceptions.InvalidLevelConfigurationException(level_num)

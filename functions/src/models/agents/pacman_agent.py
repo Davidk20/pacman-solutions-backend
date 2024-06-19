@@ -5,8 +5,7 @@ from src.models.agents.agent import Agent
 from src.models.graph import Graph
 from src.models.movement_types import MovementTypes
 from src.models.pickups import Pickup, PowerPellet
-
-from functions.src.models.position import Position
+from src.models.position import Position
 
 
 class PacmanAgent(Agent):

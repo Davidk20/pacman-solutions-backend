@@ -185,7 +185,7 @@ class Graph:
         for node in self.level.keys():
             if node.position == pos:
                 return node
-        raise exceptions.NodeNotFoundException(pos)
+        raise exceptions.NodeNotFoundException(pos.to_tuple())
 
     def find_node_by_entity(self, entity: Type[Entity]) -> list[Node]:
         """
@@ -425,7 +425,9 @@ class Graph:
             if len(path) > 12:
                 if len(paths) == 0:
                     # raise error if path is too long
-                    raise exceptions.PathNotFoundException(start_node.position)
+                    raise exceptions.PathNotFoundException(
+                        start_node.position.to_tuple()
+                    )
                 else:
                     break
 

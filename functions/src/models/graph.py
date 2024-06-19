@@ -3,13 +3,13 @@
 import random
 from typing import Type
 
+from src import exceptions
 from src.models.entity import Entity
 from src.models.environment import Gate, Teleporter
 from src.models.node import Node
 from src.models.path import Path
 from src.models.pickups import Pickup
-
-from src import exceptions
+from src.models.position import Position
 
 
 class Graph:
@@ -130,9 +130,7 @@ class Graph:
         """
         return self.level[node]
 
-    def move_agent(
-        self, old_pos: tuple[int, int], new_pos: tuple[int, int], agent: type
-    ) -> None:
+    def move_agent(self, old_pos: Position, new_pos: Position, agent: type) -> None:
         """
         Move an agent to the new position.
 
@@ -147,9 +145,9 @@ class Graph:
 
         Parameters
         ----------
-        `old_pos` : `tuple[int, int]`
+        `old_pos` : `Position`
             The current position of the agent.
-        `new_pos` : `tuple[int, int]`
+        `new_pos` : `Position`
             The position the agent is moving to.
         `agent` : `type`
             The type of the agent being moved.
@@ -170,13 +168,13 @@ class Graph:
             # raise exception so that game logic can handle the collision.
             raise exceptions.CollisionException(new_node)
 
-    def find_node_by_pos(self, pos: tuple[int, int]) -> Node:
+    def find_node_by_pos(self, pos: Position) -> Node:
         """
         Find and return the node at a given position
 
         Parameters
         ----------
-        `pos` : `tuple[int, int]`
+        `pos` : `Position`
             The position to query
 
         Returns
@@ -213,7 +211,7 @@ class Graph:
             )
         return nodes
 
-    def map_edges(self, mapping: dict[tuple[int, int], list[tuple[int, int]]]) -> None:
+    def map_edges(self, mapping: dict[Position, list[Position]]) -> None:
         """
         Maps nodes to their adjacent nodes.
 
@@ -222,7 +220,7 @@ class Graph:
 
         Parameters
         ----------
-        `mapping` : `dict[tuple[int, int], list[tuple[int, int]]]`
+        `mapping` : `dict[Position, list[Position]]`
             The raw mapping between nodes and their adjacent nodes.
         """
         for node, children in mapping.items():
@@ -243,13 +241,13 @@ class Graph:
             )
         self.total_pickups = self.remaining_pickups()
 
-    def bfs(self, start_pos: tuple[int, int] | Node) -> list[Node]:
+    def bfs(self, start_pos: Position | Node) -> list[Node]:
         """
         Perform a breadth first search on the graph given a starting point.
 
         Parameters
         ----------
-        `start_pos` : `tuple[int, int] | Node`
+        `start_pos` : `Position | Node`
             The starting point from which to run the search.
 
         Returns
@@ -258,7 +256,7 @@ class Graph:
         """
         start = (
             self.find_node_by_pos(start_pos)
-            if isinstance(start_pos, tuple)
+            if isinstance(start_pos, Position)
             else start_pos
         )
         visited: list[Node] = []
@@ -311,9 +309,7 @@ class Graph:
                     return True
         return False
 
-    def find_paths_between(
-        self, start_pos: tuple[int, int], end_pos: tuple[int, int]
-    ) -> list[Path]:
+    def find_paths_between(self, start_pos: Position, end_pos: Position) -> list[Path]:
         """
         Find all valid paths between two points.
 
@@ -333,9 +329,9 @@ class Graph:
 
         Parameters
         ----------
-        `start_pos` : `tuple[int, int]`
+        `start_pos` : `Position`
             The starting position.
-        `end_pos` : `tuple[int, int]`
+        `end_pos` : `Position`
             The goal position.
 
         Returns
@@ -365,16 +361,16 @@ class Graph:
 
         return paths
 
-    def shortest_path_to(self, current: tuple[int, int], goal: tuple[int, int]) -> Path:
+    def shortest_path_to(self, current: Position, goal: Position) -> Path:
         """
         Finds the shortest path between two nodes,
         irrespective of reward or the presence of ghosts.
 
         Parameters
         ----------
-        `current` : `tuple[int, int]`
+        `current` : `Position`
             The starting position.
-        `goal` : `tuple[int, int]`
+        `goal` : `Position`
             The goal position.
 
         Returns
@@ -394,7 +390,7 @@ class Graph:
         """
         return sum(node.contains(Pickup) for node in self.nodes())
 
-    def find_path_to_next_jct(self, start_pos: tuple[int, int]) -> list[Path]:
+    def find_path_to_next_jct(self, start_pos: Position) -> list[Path]:
         """
         Find all paths between the current position and the surrounding junctions.
 

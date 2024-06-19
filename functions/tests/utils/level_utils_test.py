@@ -1,5 +1,6 @@
 """Tests on the level utility functions."""
 
+from src.models.position import Position
 from src.services import level_handler
 from src.utils import level_utils
 from tests.mocks.mock_graph_test import mock_graph
@@ -35,12 +36,12 @@ def test_array_to_graph():
 
 
 def test_in_bounds():
-    assert level_utils.in_bounds(31, 28, (1, 1))
+    assert level_utils.in_bounds(31, 28, Position(1, 1))
 
 
 def test_out_of_bounds():
-    assert not level_utils.in_bounds(31, 28, (28, 14))
+    assert not level_utils.in_bounds(31, 28, Position(28, 14))
 
 
 def test_first_non_wall_node():
-    assert level_utils.first_non_wall_node(level_handler.get_map(1)) == (1, 1)
+    assert level_utils.first_non_wall_node(level_handler.get_map(1)) == Position(1, 1)

@@ -1,5 +1,7 @@
 """Model representing a position in two-dimensional space."""
 
+from typing import List
+
 
 class Position:
     """Model representing a position in two-dimensional space."""
@@ -11,13 +13,16 @@ class Position:
         """The y-coordinate."""
 
     def __repr__(self) -> str:
-        return f"x: {self.x} y: {self.y}"
+        return f"(x: {self.x} y: {self.y})"
 
     def __eq__(self, __value: object) -> bool:
         if isinstance(__value, Position):
             return self.x == __value.x and self.y == __value.y
         else:
             return False
+
+    def __hash__(self) -> int:
+        return hash((self._x, self._y))
 
     @property
     def x(self):
@@ -37,6 +42,9 @@ class Position:
     def y(self, value):
         self._y = value
 
+    def to_tuple(self) -> tuple[int, int]:
+        return (self.x, self.y)
+
     def add(self, adder: "Position") -> "Position":
         """
         Adds two positions together.
@@ -51,9 +59,9 @@ class Position:
         `Position`
             The result of the calculation.
         """
-        self.x += adder.x
-        self.y += adder.y
-        return self
+        x = self.x + adder.x
+        y = self.y + adder.y
+        return Position(x, y)
 
     def subtract(self, sub: "Position") -> "Position":
         """
@@ -69,9 +77,9 @@ class Position:
         `Position`
             The result of the calculation.
         """
-        self.x -= sub.x
-        self.y -= sub.y
-        return self
+        x = self.x - sub.x
+        y = self.y - sub.y
+        return Position(x, y)
 
     def multiply(self, coefficient: int) -> "Position":
         """
@@ -89,6 +97,14 @@ class Position:
         self.x = self.x * coefficient
         self.y = self.y * coefficient
         return self
+
+    def expand(self) -> List["Position"]:
+        return [
+            self.add(Position(0, -1)),
+            self.add(Position(0, 1)),
+            self.add(Position(-1, 0)),
+            self.add(Position(1, 0)),
+        ]
 
     def direct_distance(self, other: "Position") -> "Position":
         """

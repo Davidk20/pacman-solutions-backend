@@ -1,8 +1,8 @@
+from src.exceptions import InvalidNodeException
 from src.models.environment import EnvironmentEntity
 from src.models.node import Node
-
-from src import exceptions
-from src.models import pickups
+from src.models.pickups import Pickup
+from src.models.position import Position
 
 
 class Path:
@@ -46,9 +46,7 @@ class Path:
             # Starts from second index to ignore agent in first position.
             if node.empty():
                 continue
-            if not node.contains(pickups.Pickup) and not node.contains(
-                EnvironmentEntity
-            ):
+            if not node.contains(Pickup) and not node.contains(EnvironmentEntity):
                 return False
         return True
 
@@ -73,8 +71,8 @@ class Path:
         score = 0
         for node in self.route:
             try:
-                score += node.get_entity(pickups.Pickup).score()
-            except exceptions.InvalidNodeException:
+                score += node.get_entity(Pickup).score()
+            except InvalidNodeException:
                 pass
         return score
 
@@ -88,14 +86,14 @@ class Path:
         """
         return self.route.pop(0)
 
-    def backwards(self, history: list[tuple[int, int]]) -> bool:
+    def backwards(self, history: list[Position]) -> bool:
         """
         Check whether the agent would be moving backward's by traversing
         this path.
 
         Parameters
         ----------
-        `history` : `list[tuple[int, int]]`
+        `history` : `list[Position]`
             The path history of the agent.
 
         Returns

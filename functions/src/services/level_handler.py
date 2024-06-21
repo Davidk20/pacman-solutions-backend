@@ -28,6 +28,7 @@ def get_levels():
     """
 
     # pylint: disable=R1732
+    # 'with' opening not suitable here for use case.
 
     absolute_path = os.path.dirname(__file__)
     relative_path = "../models/levels.json"

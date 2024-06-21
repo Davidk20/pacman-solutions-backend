@@ -1,7 +1,7 @@
 """Mock values for agents."""
 
-from src.models.agents.ghost_agent import GhostAgent
-from src.models.movement_types import MovementTypes
+from functions.src.models.agents.ghost_agent import GhostAgent
+from functions.src.models.movement_types import MovementTypes
 
 
 def mock_ghost() -> GhostAgent:

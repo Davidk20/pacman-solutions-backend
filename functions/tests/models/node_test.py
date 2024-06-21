@@ -1,10 +1,11 @@
 """Tests for the Node model."""
 
 import pytest
-from src import exceptions
-from src.models.agents.placeholder_agent import PlaceholderAgent
-from src.models.node import Node
-from src.models.pickups import Empty, PacDot
+
+from functions.src import exceptions
+from functions.src.models.agents.placeholder_agent import PlaceholderAgent
+from functions.src.models.node import Node
+from functions.src.models.pickups import Empty, PacDot
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

@@ -10,8 +10,9 @@ import argparse
 import sys
 
 from main import app
-from src.scripts.analytics import PacmanAnalytics
-from src.services.game_manager import GameManager, RunConfiguration
+
+from functions.src.scripts.analytics import PacmanAnalytics
+from functions.src.services.game_manager import GameManager, RunConfiguration
 
 try:
     print("")
@@ -23,13 +24,17 @@ except ModuleNotFoundError:
 
 
 class ArgParser(argparse.ArgumentParser):
+    """Custom argument parser instance."""
+
     def error(self, message):
+        """Custom Error Message."""
         sys.stderr.write(f"\nError: {message}\n\n")
         self.print_help()
         sys.exit(2)
 
 
 def main():
+    """Run the CLI."""
     parser = ArgParser(
         prog="runner.py",
         description="""

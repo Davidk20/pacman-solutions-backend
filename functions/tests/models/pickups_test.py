@@ -1,6 +1,6 @@
 """Tests for the pickups in the game."""
 
-from src.models.pickups import (
+from functions.src.models.pickups import (
     Apple,
     Bell,
     Cherry,

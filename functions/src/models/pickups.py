@@ -1,6 +1,6 @@
 """Collection of objects representing the pickups possible during gameplay."""
 
-from src.models.entity import Entity
+from functions.src.models.entity import Entity
 
 
 class Pickup(Entity):

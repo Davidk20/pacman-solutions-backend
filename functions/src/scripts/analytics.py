@@ -3,12 +3,12 @@
 import time
 from typing import Type
 
-from src.models.agents.custom_agents.greedy import GreedyPacMan
-from src.models.agents.custom_agents.inactive import InactivePacMan
-from src.models.agents.custom_agents.informed import InformedPacMan
-from src.models.agents.custom_agents.unplanned import UnplannedPacMan
-from src.models.agents.pacman_agent import PacmanAgent
-from src.services import game_manager
+from functions.src.models.agents.custom_agents.greedy import GreedyPacMan
+from functions.src.models.agents.custom_agents.inactive import InactivePacMan
+from functions.src.models.agents.custom_agents.informed import InformedPacMan
+from functions.src.models.agents.custom_agents.unplanned import UnplannedPacMan
+from functions.src.models.agents.pacman_agent import PacmanAgent
+from functions.src.services import game_manager
 
 
 class PacmanAnalytics:

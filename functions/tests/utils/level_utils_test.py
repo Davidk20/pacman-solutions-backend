@@ -1,9 +1,10 @@
 """Tests on the level utility functions."""
 
-from src.models.position import Position
-from src.services import level_handler
-from src.utils import level_utils
 from tests.mocks.mock_graph_test import mock_graph
+
+from functions.src.models.position import Position
+from functions.src.services import level_handler
+from functions.src.utils import level_utils
 
 
 def test_graph_to_array_size():

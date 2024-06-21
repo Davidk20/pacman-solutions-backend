@@ -2,10 +2,10 @@
 
 from random import choice
 
-from src.models.agents.pacman_agent import PacmanAgent
-from src.models.graph import Graph
-from src.models.position import Position
-from src.utils.agent_utils import remove_backwards_paths
+from functions.src.models.agents.pacman_agent import PacmanAgent
+from functions.src.models.graph import Graph
+from functions.src.models.position import Position
+from functions.src.utils.agent_utils import remove_backwards_paths
 
 
 class UnplannedPacMan(PacmanAgent):
@@ -21,7 +21,7 @@ class UnplannedPacMan(PacmanAgent):
     # looping nature of Agent cycle means access will be before definition
     # when defined in previous cycle.
 
-    def _perceive(self, level: Graph) -> None:
+    def _perceive(self, time: int, level: Graph) -> None:
         current_node = level.find_node_by_pos(self.position)
 
         # If the current path is valid then stay on this path

@@ -1,8 +1,8 @@
 """Utility functions serving the Entity models."""
 
-from src.models import environment, pickups
-from src.models.agents import agent
-from src.models.agents.placeholder_agent import PlaceholderAgent
+from functions.src.models import environment, pickups
+from functions.src.models.agents import agent
+from functions.src.models.agents.placeholder_agent import PlaceholderAgent
 
 
 class EntityNotFoundException(Exception):

@@ -1,15 +1,15 @@
 """Tests for the game utils."""
 
 import pytest
-from src import exceptions
-from src.models import environment, pickups
-from src.models.agents import ghost_agent
-from src.models.agents.pacman_agent import PacmanAgent
-from src.models.node import Node
-from src.utils import game_utils
 from tests.mocks import mock_agent_test
 
+from functions.src import exceptions
+from functions.src.models import environment, pickups
+from functions.src.models.agents import ghost_agent
+from functions.src.models.agents.pacman_agent import PacmanAgent
+from functions.src.models.node import Node
 from functions.src.models.position import Position
+from functions.src.utils import game_utils
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

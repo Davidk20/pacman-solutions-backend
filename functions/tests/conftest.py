@@ -1,13 +1,13 @@
 """Generic fixtures for tests."""
 
 import pytest
-from tests.mocks.mock_agent_test import mock_ghost
 
 from functions.src.models import environment, pickups
 from functions.src.models.agents.pacman_agent import PacmanAgent
 from functions.src.models.graph import Graph
 from functions.src.models.node import Node
 from functions.src.models.position import Position
+from functions.tests.mocks.mock_agent_test import mock_ghost
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

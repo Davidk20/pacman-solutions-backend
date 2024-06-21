@@ -1,11 +1,12 @@
 """Tests for the Path class."""
 
 import pytest
-from src.models import environment, pickups
-from src.models.node import Node
-from src.models.path import Path
-from src.models.position import Position
 from tests.mocks.mock_agent_test import mock_ghost
+
+from functions.src.models import environment, pickups
+from functions.src.models.node import Node
+from functions.src.models.path import Path
+from functions.src.models.position import Position
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

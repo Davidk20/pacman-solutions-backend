@@ -3,13 +3,13 @@
 import random
 from typing import Type
 
-from src import exceptions
-from src.models.entity import Entity
-from src.models.environment import Gate, Teleporter
-from src.models.node import Node
-from src.models.path import Path
-from src.models.pickups import Pickup
-from src.models.position import Position
+from functions.src import exceptions
+from functions.src.models.entity import Entity
+from functions.src.models.environment import Gate, Teleporter
+from functions.src.models.node import Node
+from functions.src.models.path import Path
+from functions.src.models.pickups import Pickup
+from functions.src.models.position import Position
 
 
 class Graph:

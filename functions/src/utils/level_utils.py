@@ -1,11 +1,14 @@
 """Generic functions to be applied to instances of Levels."""
 
-from src import constants
-from src.exceptions import NodeNotFoundException
-from src.models.graph import Graph
-from src.models.node import Node
-from src.models.position import Position
-from src.utils.entity_utils import EntityNotFoundException, convert_value_to_entity
+from functions.src import constants
+from functions.src.exceptions import NodeNotFoundException
+from functions.src.models.graph import Graph
+from functions.src.models.node import Node
+from functions.src.models.position import Position
+from functions.src.utils.entity_utils import (
+    EntityNotFoundException,
+    convert_value_to_entity,
+)
 
 
 def print_level(level: list[list[int]]) -> None:

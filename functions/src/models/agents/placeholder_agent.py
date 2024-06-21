@@ -10,9 +10,9 @@ simulation and is only used to allow the initial conversion to take place
 successfully.
 """
 
-from src.models.agents.agent import Agent
-from src.models.movement_types import MovementTypes
-from src.models.position import Position
+from functions.src.models.agents.agent import Agent
+from functions.src.models.movement_types import MovementTypes
+from functions.src.models.position import Position
 
 
 class PlaceholderAgent(Agent):

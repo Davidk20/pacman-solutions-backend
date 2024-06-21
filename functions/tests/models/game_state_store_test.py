@@ -1,7 +1,7 @@
 """Tests for the `GameStateStore`."""
 
-from src.models.game_state import GameState
-from src.models.game_state_store import GameStateStore
+from functions.src.models.game_state import GameState
+from functions.src.models.game_state_store import GameStateStore
 
 
 def test_add_size():

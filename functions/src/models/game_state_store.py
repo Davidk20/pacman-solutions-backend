@@ -3,7 +3,7 @@ Model storing a collection of `GameState` objects to make up
 the full representation of a game.
 """
 
-from src.models.game_state import GameState
+from functions.src.models.game_state import GameState
 
 
 class GameStateStore:

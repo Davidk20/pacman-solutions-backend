@@ -12,9 +12,9 @@ of a number of unnecessary files.
 import json
 import os
 
-from src import exceptions
-from src.models import data_types
-from src.models.position import Position
+from functions.src import exceptions
+from functions.src.models import data_types
+from functions.src.models.position import Position
 
 
 def get_levels():

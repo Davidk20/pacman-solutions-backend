@@ -2,12 +2,12 @@
 
 from random import choice
 
-from src.models.agents.agent import Agent
-from src.models.agents.pacman_agent import PacmanAgent
-from src.models.graph import Graph
-from src.models.movement_types import MovementTypes
-from src.models.path import Path
-from src.models.position import Position
+from functions.src.models.agents.agent import Agent
+from functions.src.models.agents.pacman_agent import PacmanAgent
+from functions.src.models.graph import Graph
+from functions.src.models.movement_types import MovementTypes
+from functions.src.models.path import Path
+from functions.src.models.position import Position
 
 # pylint: disable=access-member-before-definition, attribute-defined-outside-init
 # looping nature of Agent cycle means access will be before definition

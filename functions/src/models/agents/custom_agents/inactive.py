@@ -1,8 +1,8 @@
 """Model representing the inactive Pac-Man behaviour"""
 
-from src.models.agents.pacman_agent import PacmanAgent
-from src.models.graph import Graph
-from src.models.position import Position
+from functions.src.models.agents.pacman_agent import PacmanAgent
+from functions.src.models.graph import Graph
+from functions.src.models.position import Position
 
 
 class InactivePacMan(PacmanAgent):
@@ -13,7 +13,7 @@ class InactivePacMan(PacmanAgent):
     move for the entire simulation.
     """
 
-    def _perceive(self, level: Graph) -> None:
+    def _perceive(self, time: int, level: Graph) -> None:
         # An inactive Pac-Man does not need to make perceptions.
         pass
 

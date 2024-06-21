@@ -1,12 +1,12 @@
 """Agent representing a game-authentic version of Pinky."""
 
-from src.models import environment
-from src.models.agents.ghost_agent import GhostAgent
-from src.models.agents.pacman_agent import PacmanAgent
-from src.models.graph import Graph
-from src.models.movement_types import MovementTypes
-from src.models.path import Path
-from src.models.position import Position
+from functions.src.models import environment
+from functions.src.models.agents.ghost_agent import GhostAgent
+from functions.src.models.agents.pacman_agent import PacmanAgent
+from functions.src.models.graph import Graph
+from functions.src.models.movement_types import MovementTypes
+from functions.src.models.path import Path
+from functions.src.models.position import Position
 
 
 class AuthenticPinky(GhostAgent):

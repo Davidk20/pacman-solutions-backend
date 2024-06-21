@@ -21,7 +21,7 @@ class UnplannedPacMan(PacmanAgent):
     # looping nature of Agent cycle means access will be before definition
     # when defined in previous cycle.
 
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, time: int, level: Graph) -> None:  # pylint: disable=W0613
         current_node = level.find_node_by_pos(self.position)
 
         # If the current path is valid then stay on this path

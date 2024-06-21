@@ -22,7 +22,7 @@ class InformedPacMan(PacmanAgent):
     # looping nature of Agent cycle means access will be before definition
     # when defined in previous cycle.
 
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, time: int, level: Graph) -> None:  # pylint: disable=W0613
         current_node = level.find_node_by_pos(self.position)
         if (
             not level.is_junction(current_node)

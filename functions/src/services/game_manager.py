@@ -142,8 +142,9 @@ class GameManager:
         )
         if self.win() or self.lost():
             self.running = False
-        else:
-            self.timer += 1
+            return
+
+        self.timer += 1
         self.pacman.handle_energised()
         for ag in self.agents:
             try:
@@ -165,7 +166,8 @@ class GameManager:
                             ghost_agent.GhostAgent,
                         )
             except IndexError as e:
-                print(f"{ag} - {e}")
+                if self.verbose:
+                    self.print_error_state(e)
                 self.running = False
                 raise
 
@@ -205,6 +207,13 @@ class GameManager:
         """
         print(f"Iteration {self.timer}")
         print(level_utils.print_level(level_utils.graph_to_array(self.game)))
+
+    def print_error_state(self, error) -> None:
+        """Print the state surrounding an error."""
+        print(f"Simulation: {type(self.pacman).__name__} - Iteration {self.timer}")
+        print(f"ERROR - {error}")
+        for agent in self.agents:
+            print(f"{agent.name}:\n\tpos: {agent.position}\n\tpath: {agent.path}")
 
     def handle_end(self, ghost: ghost_agent.GhostAgent = None) -> dict:  # type: ignore
         """

@@ -47,6 +47,7 @@ def test_euclidean_distance():
 
 
 def test_expand():
+    """Test that positions are correctly expanded."""
     p = Position(4, 4)
     expected = [Position(4, 3), Position(4, 5), Position(3, 4), Position(5, 4)]
     assert p.expand() == expected

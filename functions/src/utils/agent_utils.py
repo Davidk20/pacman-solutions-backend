@@ -6,8 +6,7 @@ from src import exceptions
 from src.models.graph import Graph
 from src.models.node import Node
 from src.models.path import Path
-
-from functions.src.models.position import Position
+from src.models.position import Position
 
 
 def gen_random_path(
@@ -63,3 +62,28 @@ def choose_random_turn(state: Graph, node: Node) -> Node:
         raise exceptions.InvalidNodeException("Node is not junction")
     adjacent = state.get_adjacent(node)
     return choice(adjacent)
+
+
+def remove_backwards_paths(
+    paths: list[Path], move_history: list[Position]
+) -> list[Path]:
+    """
+    Filter a list of paths to remove any which would take the agent backwards.
+
+    Parameters
+    ----------
+    `paths` : `list[Path]`
+        The list of paths to filter.
+    `move_history` : `list[Position]`
+        The agents prior movements.
+
+    Returns
+    -------
+    A list of filtered paths.
+    """
+    if len(move_history) > 2:
+        valid_paths = [
+            path for path in paths if path.route[1].position != move_history[-2]
+        ]
+        return valid_paths
+    return paths

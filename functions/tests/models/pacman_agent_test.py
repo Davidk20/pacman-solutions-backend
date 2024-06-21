@@ -7,6 +7,9 @@ from src.models.agents.pacman_agent import PacmanAgent
 from src.models.pickups import Orange, PowerPellet
 from tests.mocks.mock_agent_test import mock_ghost
 
+# pylint: disable=redefined-outer-name
+# fixtures causing error but this is the expected use.
+
 
 @pytest.fixture(autouse=True)
 def pacman():
@@ -24,7 +27,7 @@ def ghost():
 def test_increase_score(pacman: PacmanAgent):
     """Test that Pacman's score is correctly increased when consuming items."""
     pacman.handle_consume(Orange())
-    assert pacman.score() == 500
+    assert pacman.score == 500
 
 
 def test_enable_energizer(pacman: PacmanAgent):
@@ -54,16 +57,16 @@ def test_valid_multiple_ghost_consume(pacman: PacmanAgent, ghost: Agent):
     pacman.handle_consume(PowerPellet())
     with pytest.raises(exceptions.GhostDiedException):
         pacman.handle_consume(ghost)
-    assert pacman.score() == 250
+    assert pacman.score == 250
     with pytest.raises(exceptions.GhostDiedException):
         pacman.handle_consume(ghost)
-    assert pacman.score() == 650
+    assert pacman.score == 650
     with pytest.raises(exceptions.GhostDiedException):
         pacman.handle_consume(ghost)
-    assert pacman.score() == 1450
+    assert pacman.score == 1450
     with pytest.raises(exceptions.GhostDiedException):
         pacman.handle_consume(ghost)
-    assert pacman.score() == 3050
+    assert pacman.score == 3050
 
 
 def test_deenergize(pacman: PacmanAgent, ghost: Agent):
@@ -72,7 +75,7 @@ def test_deenergize(pacman: PacmanAgent, ghost: Agent):
     with pytest.raises(exceptions.GhostDiedException):
         pacman.handle_consume(ghost)
     # At this time, Pac-man should be able to consume
-    assert pacman.score() == 250
+    assert pacman.score == 250
     pacman.deenergize()
     # After being de-energized, Pac-man should lose a life
     with pytest.raises(exceptions.PacManDiedException):

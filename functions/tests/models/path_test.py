@@ -7,6 +7,9 @@ from src.models.path import Path
 from src.models.position import Position
 from tests.mocks.mock_agent_test import mock_ghost
 
+# pylint: disable=redefined-outer-name
+# fixtures causing error but this is the expected use.
+
 
 @pytest.fixture(scope="function", autouse=True)
 def path_no_agents():

@@ -9,6 +9,10 @@ from src.models.movement_types import MovementTypes
 from src.models.path import Path
 from src.models.position import Position
 
+# pylint: disable=access-member-before-definition, attribute-defined-outside-init
+# looping nature of Agent cycle means access will be before definition
+# when defined in previous cycle.
+
 
 class GhostAgent(Agent):
     """
@@ -20,6 +24,9 @@ class GhostAgent(Agent):
     that the ghosts exhibit and so they would be separated into the
     four separate classes again.
     """
+
+    # pylint: disable=too-many-instance-attributes, too-many-arguments
+    # attributes required for agent instantiation.
 
     def __init__(
         self,
@@ -47,7 +54,7 @@ class GhostAgent(Agent):
         """The path the agent is taking."""
         self._frightened_countdown: int = 6
 
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, time: int, level: Graph) -> None:  # pylint: disable=W0613
         match self.movement_type:
             case MovementTypes.FRIGHTENED:
                 self._frightened_countdown -= 1
@@ -112,11 +119,10 @@ class BlinkyAgent(GhostAgent):
             "Blinky", "Shadow", MovementTypes.CHASE, homes, 21, respawn_point, 200
         )
 
-    def _perceive(self, time: int, level: Graph) -> None:
-        super()._perceive(time, level)
-
 
 class PinkyAgent(GhostAgent):
+    """Agent representing the generic logic for Pinky."""
+
     def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Pinky", "Speedy", MovementTypes.HOMEBOUND, homes, 22, respawn_point, 200
@@ -131,6 +137,8 @@ class PinkyAgent(GhostAgent):
 
 
 class InkyAgent(GhostAgent):
+    """Agent representing the generic logic for Inky."""
+
     def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Inky", "Bashful", MovementTypes.HOMEBOUND, homes, 23, respawn_point, 200
@@ -144,6 +152,8 @@ class InkyAgent(GhostAgent):
 
 
 class ClydeAgent(GhostAgent):
+    """Agent representing the generic logic for Clyde."""
+
     def __init__(self, homes: list[Position], respawn_point: Position):
         super().__init__(
             "Clyde", "Pokey", MovementTypes.HOMEBOUND, homes, 24, respawn_point, 200

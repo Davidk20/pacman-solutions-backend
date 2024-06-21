@@ -79,7 +79,7 @@ class Graph:
         `node` : `Node`
             The `Node` object to add to the graph.
         """
-        if node not in self.level.keys():
+        if node not in self.level:
             self.level[node] = []
             self.node_count += 1
         else:
@@ -182,7 +182,7 @@ class Graph:
         The `Node` with the corresponding position. If none is found then an
         `Exception` is raised.
         """
-        for node in self.level.keys():
+        for node in self.level:
             if node.position == pos:
                 return node
         raise exceptions.NodeNotFoundException(pos.to_tuple())
@@ -202,7 +202,7 @@ class Graph:
         - If `item == Agent`, the list should only contain one value.
         """
         nodes: list[Node] = []
-        for node in self.level.keys():
+        for node in self.level:
             if node.contains(entity):
                 nodes.append(node)
         if len(nodes) == 0:
@@ -378,7 +378,7 @@ class Graph:
         The shortest `Path`.
         """
         all_paths = self.find_paths_between(current, goal)
-        return min(all_paths, key=lambda path: len(path))
+        return min(all_paths, key=len)
 
     def remaining_pickups(self) -> int:
         """
@@ -428,8 +428,7 @@ class Graph:
                     raise exceptions.PathNotFoundException(
                         start_node.position.to_tuple()
                     )
-                else:
-                    break
+                break
 
             for node in self.level[current]:
                 if node not in path and not node.contains(Gate):

@@ -1,3 +1,5 @@
+"""Utility functions serving the Entity models."""
+
 from src.models import environment, pickups
 from src.models.agents import agent
 from src.models.agents.placeholder_agent import PlaceholderAgent
@@ -25,6 +27,10 @@ def convert_value_to_entity(
     -------
     The entity corresponding to the value.
     """
+
+    # pylint: disable=too-many-return-statements
+    # Switch statement needed for this many game items.
+
     match value:
         case 0:
             return pickups.Empty()

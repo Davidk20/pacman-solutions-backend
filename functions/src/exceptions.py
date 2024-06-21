@@ -9,7 +9,7 @@ class PacManDiedException(Exception):
     """Raised when Pac-Man dies."""
 
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__("Pac-Man Died")
 
 
 class GhostDiedException(Exception):
@@ -106,6 +106,6 @@ class CollisionException(Exception):
         self.agent = colliding_node.get_higher_entity()
         self.colliding_entity = colliding_node.get_lower_entity()
         super().__init__(
-            f"{self.agent.name()} collided with {self.colliding_entity.name()}"
+            f"{self.agent.name} collided with {self.colliding_entity.name}"
             f" at {self.node.position}"
         )

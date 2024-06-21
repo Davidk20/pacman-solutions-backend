@@ -1,9 +1,12 @@
+"""Model representing the informed Pac-Man behaviour."""
+
 from random import choice
 
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.path import Path
 from src.models.position import Position
+from src.utils.agent_utils import remove_backwards_paths
 
 
 class InformedPacMan(PacmanAgent):
@@ -15,10 +18,11 @@ class InformedPacMan(PacmanAgent):
     choose a new position as target.
     """
 
-    def __init__(self, home_path: list[Position], respawn_point: Position):
-        super().__init__(home_path, respawn_point)
+    # pylint: disable=access-member-before-definition, attribute-defined-outside-init
+    # looping nature of Agent cycle means access will be before definition
+    # when defined in previous cycle.
 
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, level: Graph) -> None:
         current_node = level.find_node_by_pos(self.position)
         if (
             not level.is_junction(current_node)
@@ -36,14 +40,7 @@ class InformedPacMan(PacmanAgent):
         # prune paths where the end point == starting point
         valid_paths = [path for path in valid_paths if not path.is_loop()]
         backwards_paths = valid_paths
-        if len(self.move_history) > 2:
-            # Remove any paths which would take the agent backwards
-            valid_paths = [
-                path
-                for path in valid_paths
-                if path.route[1].position != self.move_history[-2]
-            ]
-
+        valid_paths = remove_backwards_paths(valid_paths, self.move_history)
         # choose a safe path to follow
         if len(valid_paths) > 0:
             sorted_paths = sorted(

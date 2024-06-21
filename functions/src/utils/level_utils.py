@@ -50,7 +50,7 @@ def array_to_graph(level: list[list[int]]) -> Graph:
         if (
             not in_bounds(height, width, current)
             or is_wall(level, current)
-            or current in adjacency_list.keys()
+            or current in adjacency_list
         ):
             continue
 
@@ -89,7 +89,7 @@ def graph_to_array(graph: Graph) -> list[list[int]]:
                 if node.empty():
                     level[row].append(0)
                 else:
-                    level[row].append(node.get_higher_entity().value())
+                    level[row].append(node.get_higher_entity().value)
             except NodeNotFoundException:
                 level[row].append(99)
                 continue
@@ -116,13 +116,13 @@ def in_bounds(height: int, width: int, pos: Position) -> bool:
     return pos.x >= 0 and pos.x < width and pos.y >= 0 and pos.y < height
 
 
-def is_wall(map: list[list[int]], pos: Position) -> bool:
+def is_wall(level: list[list[int]], pos: Position) -> bool:
     """
     Checks if the specified space is a `Wall`.
 
     Parameters
     ----------
-    `map` : `list[list[int]]`
+    `level` : `list[list[int]]`
         The level to use as reference.
     `pos` : `Position`
         The position to check.
@@ -131,26 +131,26 @@ def is_wall(map: list[list[int]], pos: Position) -> bool:
     -------
     `True` if the space is filled with a wall.
     """
-    return map[pos.y][pos.x] == 99
+    return level[pos.y][pos.x] == 99
 
 
-def first_non_wall_node(map: list[list[int]]) -> Position:
+def first_non_wall_node(level: list[list[int]]) -> Position:
     """
-    Find and return the first position within the map.
+    Find and return the first position within the level.
 
     This should be the upper-leftmost node which is not a wall.
 
     Parameters
     ----------
-    `map` : `list[list[int]]`
+    `level` : `list[list[int]]`
         The level to search.
 
     Returns
     -------
     The position of the first non-wall node.
     """
-    for y in range(len(map)):
-        for x in range(len(map[0])):
-            if map[y][x] != 99:
+    for y, row in enumerate(level):
+        for x, col in enumerate(row):
+            if col != 99:
                 return Position(x, y)
     raise EntityNotFoundException("No non-wall nodes found.")

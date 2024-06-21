@@ -26,9 +26,15 @@ def get_levels():
     -------
     A `dict` object containing the levels and their data.
     """
+
+    # pylint: disable=R1732
+
     absolute_path = os.path.dirname(__file__)
     relative_path = "../models/levels.json"
-    raw_levels = open(os.path.join(absolute_path, relative_path), encoding="utf-8")
+    raw_levels = open(
+        os.path.join(absolute_path, relative_path),
+        encoding="utf-8",
+    )
     json_data = json.load(raw_levels)
     yield json_data
     raw_levels.close()

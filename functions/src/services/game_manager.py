@@ -109,7 +109,7 @@ class GameManager:
         """
         for placeholder in self.game.find_node_by_entity(PlaceholderAgent):
             for ag in self.agents:
-                if placeholder.get_higher_entity().value() == ag.value():
+                if placeholder.get_higher_entity().value == ag.value:
                     placeholder.remove_entity(placeholder.get_higher_entity())
                     placeholder.add_entity(ag)
                     break
@@ -138,9 +138,7 @@ class GameManager:
         """Increments the game time and processes all time based events."""
         level_array = level_utils.graph_to_array(self.game)
         self.state_store.add(
-            GameState(
-                self.timer, level_array, self.pacman.energized, self.pacman.score()
-            )
+            GameState(self.timer, level_array, self.pacman.energized, self.pacman.score)
         )
         if self.win() or self.lost():
             self.running = False
@@ -163,7 +161,7 @@ class GameManager:
                         ghost.ghost.handle_capture()
                         self.game.move_agent(
                             collision.node.position,
-                            self.respawn[ghost.ghost.name().lower()],
+                            self.respawn[ghost.ghost.name.lower()],
                             ghost_agent.GhostAgent,
                         )
             except IndexError as e:
@@ -194,7 +192,7 @@ class GameManager:
                 self.timer,
                 level_utils.graph_to_array(self.game),
                 self.pacman.energized,
-                self.pacman.score(),
+                self.pacman.score,
             )
         )
         return self.handle_end()
@@ -224,9 +222,9 @@ class GameManager:
                 print("GAME OVER")
                 print("##############################")
                 print(f"Time: {self.timer}")
-                print(f"Pac-Man score: {self.pacman.score()}")
+                print(f"Pac-Man score: {self.pacman.score}")
                 if ghost:
-                    print(f"{ghost.name()} caught Pac-Man at {self.pacman.position}")
+                    print(f"{ghost.name} caught Pac-Man at {self.pacman.position}")
                 if self.verbose:
                     self.print_current_state()
                 return self.state_store.to_json()
@@ -235,4 +233,4 @@ class GameManager:
                 return self.state_store.to_json()
 
             case RunConfiguration.ANALYTIC:
-                return {"time_game": self.timer, "score": self.pacman.score()}
+                return {"time_game": self.timer, "score": self.pacman.score}

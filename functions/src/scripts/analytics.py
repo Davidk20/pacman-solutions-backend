@@ -6,16 +6,17 @@ from typing import Type
 from src.models.agents.custom_agents.greedy import GreedyPacMan
 from src.models.agents.custom_agents.inactive import InactivePacMan
 from src.models.agents.custom_agents.informed import InformedPacMan
-from src.models.agents.custom_agents.random import RandomPacMan
+from src.models.agents.custom_agents.unplanned import UnplannedPacMan
 from src.models.agents.pacman_agent import PacmanAgent
-
 from src.services import game_manager
 
 
 class PacmanAnalytics:
     """Analytics tool designed to compare the performance of various agents."""
 
-    def __init__(self, runs: int = 10, custom_agents: list[Type[PacmanAgent]] = []):
+    def __init__(
+        self, runs: int = 10, custom_agents: list[Type[PacmanAgent]] = []
+    ):  # pylint: disable=W0102
         """
         Initialise the class.
 
@@ -32,7 +33,7 @@ class PacmanAnalytics:
         self.runs = runs
         self.agents: list[Type[PacmanAgent]] = [
             InactivePacMan,
-            RandomPacMan,
+            UnplannedPacMan,
             InformedPacMan,
             GreedyPacMan,
         ] + custom_agents
@@ -63,10 +64,10 @@ class PacmanAnalytics:
         for agent, data in self.results.items():
             print(agent)
             avg_time_real = round(
-                (sum([run["time_real"] for run in data]) / self.runs), 4
+                (sum((run["time_real"] for run in data)) / self.runs), 4
             )
-            avg_time_game = sum([run["time_game"] for run in data]) / self.runs
-            avg_score = sum([run["score"] for run in data]) / self.runs
+            avg_time_game = sum((run["time_game"] for run in data)) / self.runs
+            avg_score = sum((run["score"] for run in data)) / self.runs
             print(f"avg time (in seconds) = {avg_time_real}")
             print(f"avg time (in game) = {avg_time_game}")
             print(f"avg score = {avg_score}")

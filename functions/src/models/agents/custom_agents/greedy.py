@@ -1,3 +1,5 @@
+"""Model representing the Greedy Pac-Man behaviour."""
+
 import random
 
 from src.models.agents.pacman_agent import PacmanAgent
@@ -14,10 +16,11 @@ class GreedyPacMan(PacmanAgent):
     take place is to remove any game-breaking paths such as stationary routes.
     """
 
-    def __init__(self, home_path: list[Position], respawn_point: Position):
-        super().__init__(home_path, respawn_point)
+    # pylint: disable=access-member-before-definition, attribute-defined-outside-init
+    # looping nature of Agent cycle means access will be before definition
+    # when defined in previous cycle.
 
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, level: Graph) -> None:
         current_node = level.find_node_by_pos(self.position)
         # If the current path is valid then stay on this path
         if not level.is_junction(current_node) and len(self.path) > 0:

@@ -25,6 +25,9 @@ from src.models.position import Position
 class Agent(ABC, Entity):
     """Abstract class used to provide core functionality to all agents."""
 
+    # pylint: disable=too-many-instance-attributes, too-many-arguments
+    # attributes required for agent instantiation.
+
     def __init__(
         self,
         name: str,
@@ -74,7 +77,7 @@ class Agent(ABC, Entity):
 
     def __repr__(self) -> str:
         return (
-            f"(Name: {self.name()}, Score: {self.score()}, "
+            f"(Name: {self.name}, Score: {self.score}, "
             f"Behaviour: {self.behaviour}, "
             f"Movement: {self.movement_type}), "
             f"Target: {self.target}), "

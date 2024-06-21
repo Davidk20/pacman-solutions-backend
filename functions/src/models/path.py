@@ -1,3 +1,5 @@
+"""Model representing a single path."""
+
 from src.exceptions import InvalidNodeException
 from src.models.environment import EnvironmentEntity
 from src.models.node import Node
@@ -19,8 +21,7 @@ class Path:
     def __repr__(self) -> str:
         if len(self.route) > 0:
             return f"Path from {self.route[0].position} to {self.route[-1].position}"
-        else:
-            return "Empty Path"
+        return "Empty Path"
 
     def __len__(self) -> int:
         return len(self.route)
@@ -71,7 +72,7 @@ class Path:
         score = 0
         for node in self.route:
             try:
-                score += node.get_entity(Pickup).score()
+                score += node.get_entity(Pickup).score
             except InvalidNodeException:
                 pass
         return score
@@ -102,5 +103,4 @@ class Path:
         """
         if len(history) > 1:
             return self.route[1].position in history[-2:]
-        else:
-            return False
+        return False

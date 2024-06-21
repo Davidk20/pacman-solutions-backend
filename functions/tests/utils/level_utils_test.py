@@ -36,12 +36,15 @@ def test_array_to_graph():
 
 
 def test_in_bounds():
+    """Test that a valid position is identified."""
     assert level_utils.in_bounds(31, 28, Position(1, 1))
 
 
 def test_out_of_bounds():
+    """Test that an out-of-bounds position is identified."""
     assert not level_utils.in_bounds(31, 28, Position(28, 14))
 
 
 def test_first_non_wall_node():
+    """Test that the first playable space can be found."""
     assert level_utils.first_non_wall_node(level_handler.get_map(1)) == Position(1, 1)

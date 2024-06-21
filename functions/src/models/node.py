@@ -47,7 +47,7 @@ class Node:
         """
 
     def __repr__(self) -> str:
-        entities = [entity.name() for entity in self.entities]
+        entities = [entity.name for entity in self.entities]
         return f"""\nPosition: {self.position}, Contains: {entities}"""
 
     def __eq__(self, __value: object) -> bool:
@@ -94,8 +94,8 @@ class Node:
         """
         try:
             self.entities.remove(entity)
-        except ValueError:
-            raise InvalidNodeException(f"Cannot remove {entity.name()}")
+        except ValueError as ve:
+            raise InvalidNodeException(f"Cannot remove {entity.name}") from ve
 
     def get_higher_entity(self) -> Entity:
         """

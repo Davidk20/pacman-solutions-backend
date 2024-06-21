@@ -5,9 +5,10 @@ from random import choice
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.graph import Graph
 from src.models.position import Position
+from src.utils.agent_utils import remove_backwards_paths
 
 
-class RandomPacMan(PacmanAgent):
+class UnplannedPacMan(PacmanAgent):
     """
     Model representing the random Pac-Man behaviour.
 
@@ -16,10 +17,11 @@ class RandomPacMan(PacmanAgent):
     Pac-Man will randomly choose a new direction at each junction.
     """
 
-    def __init__(self, home_path: list[Position], respawn_point: Position):
-        super().__init__(home_path, respawn_point)
+    # pylint: disable=access-member-before-definition, attribute-defined-outside-init
+    # looping nature of Agent cycle means access will be before definition
+    # when defined in previous cycle.
 
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, level: Graph) -> None:
         current_node = level.find_node_by_pos(self.position)
 
         # If the current path is valid then stay on this path
@@ -29,13 +31,7 @@ class RandomPacMan(PacmanAgent):
         all_paths = level.find_path_to_next_jct(self.position)
         # prune paths where the path only contains the target.
         valid_paths = [path for path in all_paths if len(path) > 2]
-        if len(self.move_history) > 2:
-            # Remove any paths which would take the agent backwards
-            valid_paths = [
-                path
-                for path in valid_paths
-                if path.route[1].position != self.move_history[-2]
-            ]
+        valid_paths = remove_backwards_paths(valid_paths, self.move_history)
         self.path = choice(valid_paths)
         if self.path.route[0].position == self.position:
             # if the path contains the current pos it must be removed from the list

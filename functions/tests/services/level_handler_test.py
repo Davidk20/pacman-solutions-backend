@@ -34,4 +34,5 @@ def test_get_overview():
 
 
 def test_get_ghost_home():
+    """Test ability to recall agents home position."""
     assert level_handler.get_home(1, "Blinky") == [(1, 1), (1, 6), (5, 5), (5, 1)]

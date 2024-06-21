@@ -18,8 +18,7 @@ class Position:
     def __eq__(self, __value: object) -> bool:
         if isinstance(__value, Position):
             return self.x == __value.x and self.y == __value.y
-        else:
-            return False
+        return False
 
     def __hash__(self) -> int:
         return hash((self._x, self._y))
@@ -43,6 +42,7 @@ class Position:
         self._y = value
 
     def to_tuple(self) -> tuple[int, int]:
+        """Returns the position as a tuple."""
         return (self.x, self.y)
 
     def add(self, adder: "Position") -> "Position":
@@ -99,6 +99,7 @@ class Position:
         return self
 
     def expand(self) -> List["Position"]:
+        """Expands the position in all four axis."""
         return [
             self.add(Position(0, -1)),
             self.add(Position(0, 1)),

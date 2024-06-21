@@ -1,3 +1,5 @@
+"""Agent representing a game-authentic version of Pinky."""
+
 from src.models import environment
 from src.models.agents.ghost_agent import GhostAgent
 from src.models.agents.pacman_agent import PacmanAgent
@@ -10,8 +12,14 @@ from src.models.position import Position
 class AuthenticPinky(GhostAgent):
     """Represents a game-authentic version of Pinky."""
 
+    # pylint: disable=access-member-before-definition, attribute-defined-outside-init
+    # looping nature of Agent cycle means access will be before definition
+    # when defined in previous cycle.
+
     def __init__(self, homes: list[Position]):
-        super().__init__("Pinky", "Speedy", MovementTypes.HOMEBOUND, homes, 22, 200)
+        super().__init__(
+            "Pinky", "Speedy", MovementTypes.HOMEBOUND, homes, 22, Position(1, 1), 200
+        )
 
     def _perceive(self, time: int, level: Graph) -> None:
         super()._perceive(time, level)

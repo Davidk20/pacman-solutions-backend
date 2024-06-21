@@ -13,10 +13,7 @@ class InactivePacMan(PacmanAgent):
     move for the entire simulation.
     """
 
-    def __init__(self, home_path: list[Position], respawn_point: Position):
-        super().__init__(home_path, respawn_point)
-
-    def _perceive(self, time: int, level: Graph) -> None:
+    def _perceive(self, level: Graph) -> None:
         # An inactive Pac-Man does not need to make perceptions.
         pass
 

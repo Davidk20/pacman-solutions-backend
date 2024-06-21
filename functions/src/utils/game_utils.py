@@ -7,6 +7,8 @@ from src.models.node import Node
 
 
 def handle_collision(node: Node) -> None:
+    """Handle the collision within a single node between two or more entities."""
+
     if node.contains(environment.Teleporter):
         # If passing through teleporter, ignore
         return

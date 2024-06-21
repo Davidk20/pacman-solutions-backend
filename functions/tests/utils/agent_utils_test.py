@@ -1,9 +1,9 @@
 """Tests for the Agent utility functions."""
 
-from functions.src.models.graph import Graph
-from functions.src.models.node import Node
-from functions.src.models.position import Position
-from functions.src.utils import agent_utils
+from src.models.graph import Graph
+from src.models.node import Node
+from src.models.position import Position
+from src.utils import agent_utils
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

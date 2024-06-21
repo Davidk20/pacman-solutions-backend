@@ -1,6 +1,6 @@
 """Models representing the environment."""
 
-from functions.src.models.entity import Entity
+from src.models.entity import Entity
 
 
 class EnvironmentEntity(Entity):

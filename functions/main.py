@@ -4,8 +4,7 @@ from firebase_admin import initialize_app
 from firebase_functions import https_fn, options
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-
-from functions.src.services import game_manager, level_handler
+from src.services import game_manager, level_handler
 
 initialize_app()
 

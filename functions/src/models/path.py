@@ -1,10 +1,10 @@
 """Model representing a single path."""
 
-from functions.src.exceptions import InvalidNodeException
-from functions.src.models.environment import EnvironmentEntity
-from functions.src.models.node import Node
-from functions.src.models.pickups import Pickup
-from functions.src.models.position import Position
+from src.exceptions import InvalidNodeException
+from src.models.environment import EnvironmentEntity
+from src.models.node import Node
+from src.models.pickups import Pickup
+from src.models.position import Position
 
 
 class Path:

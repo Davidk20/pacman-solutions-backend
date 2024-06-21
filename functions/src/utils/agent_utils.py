@@ -2,11 +2,11 @@
 
 from random import choice
 
-from functions.src import exceptions
-from functions.src.models.graph import Graph
-from functions.src.models.node import Node
-from functions.src.models.path import Path
-from functions.src.models.position import Position
+from src import exceptions
+from src.models.graph import Graph
+from src.models.node import Node
+from src.models.path import Path
+from src.models.position import Position
 
 
 def gen_random_path(

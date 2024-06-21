@@ -10,9 +10,9 @@ import argparse
 import sys
 
 from main import app
-
-from functions.src.scripts.analytics import PacmanAnalytics
-from functions.src.services.game_manager import GameManager, RunConfiguration
+from src.scripts.analytics import PacmanAnalytics
+from src.services.game_manager import GameManager, RunConfiguration
+from src.utils.agent_utils import gen_agents
 
 try:
     print("")
@@ -73,6 +73,13 @@ def main():
         help="enable debug output - full final state printing + all noteworthy events",
     )
 
+    local_options.add_argument(
+        "agent",
+        choices=["adventurous", "greedy", "inactive", "informed", "unplanned"],
+        default="informed",
+        help="Choose the agent you wish to use.",
+    )
+
     analytics_options = parser.add_argument_group("Analytics Options")
 
     analytics_options.add_argument(
@@ -96,7 +103,10 @@ def main():
     match args.run_config:
         case "single":
             game = GameManager(
-                args.level, configuration=RunConfiguration.LOCAL, verbose=args.verbose
+                args.level,
+                configuration=RunConfiguration.LOCAL,
+                verbose=args.verbose,
+                custom_pacman=gen_agents(args.agent),
             )
             game.game_loop()
         case "flask":

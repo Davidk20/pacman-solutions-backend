@@ -1,9 +1,8 @@
 """Tests for the LevelHandler."""
 
 import pytest
-
-from functions.src.exceptions import LevelNotFoundException
-from functions.src.services import level_handler
+from src.exceptions import LevelNotFoundException
+from src.services import level_handler
 
 
 def test_get_level():

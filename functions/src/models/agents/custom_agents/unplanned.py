@@ -2,10 +2,10 @@
 
 from random import choice
 
-from functions.src.models.agents.pacman_agent import PacmanAgent
-from functions.src.models.graph import Graph
-from functions.src.models.position import Position
-from functions.src.utils.agent_utils import remove_backwards_paths
+from src.models.agents.pacman_agent import PacmanAgent
+from src.models.graph import Graph
+from src.models.position import Position
+from src.utils.agent_utils import remove_backwards_paths
 
 
 class UnplannedPacMan(PacmanAgent):

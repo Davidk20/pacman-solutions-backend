@@ -1,9 +1,9 @@
 """Utility functions to assist running the game."""
 
-from functions.src.models import environment, pickups
-from functions.src.models.agents import ghost_agent
-from functions.src.models.agents.pacman_agent import PacmanAgent
-from functions.src.models.node import Node
+from src.models import environment, pickups
+from src.models.agents import ghost_agent
+from src.models.agents.pacman_agent import PacmanAgent
+from src.models.node import Node
 
 
 def handle_collision(node: Node) -> None:

@@ -2,7 +2,7 @@
 
 from typing import TypedDict
 
-from functions.src.models.position import Position
+from src.models.position import Position
 
 
 class LevelData(TypedDict):

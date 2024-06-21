@@ -2,10 +2,10 @@
 
 from typing import Type, TypeVar
 
-from functions.src.exceptions import InvalidNodeException
-from functions.src.models.entity import Entity
-from functions.src.models.pickups import Empty, Pickup
-from functions.src.models.position import Position
+from src.exceptions import InvalidNodeException
+from src.models.entity import Entity
+from src.models.pickups import Empty, Pickup
+from src.models.position import Position
 
 
 class Node:

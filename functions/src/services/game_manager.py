@@ -2,16 +2,16 @@
 
 from enum import Enum
 
-from functions.src import exceptions
-from functions.src.models.agents import ghost_agent
-from functions.src.models.agents.custom_agents.informed import InformedPacMan
-from functions.src.models.agents.pacman_agent import PacmanAgent
-from functions.src.models.agents.placeholder_agent import PlaceholderAgent
-from functions.src.models.game_state import GameState
-from functions.src.models.game_state_store import GameStateStore
-from functions.src.models.graph import Graph
-from functions.src.services import level_handler
-from functions.src.utils import game_utils, level_utils
+from src import exceptions
+from src.models.agents import ghost_agent
+from src.models.agents.custom_agents.informed import InformedPacMan
+from src.models.agents.pacman_agent import PacmanAgent
+from src.models.agents.placeholder_agent import PlaceholderAgent
+from src.models.game_state import GameState
+from src.models.game_state_store import GameStateStore
+from src.models.graph import Graph
+from src.services import level_handler
+from src.utils import game_utils, level_utils
 
 
 class RunConfiguration(Enum):

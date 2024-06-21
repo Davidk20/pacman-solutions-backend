@@ -15,11 +15,11 @@ https://github.com/dicelab-rhul/vacuumworld
 
 from abc import ABC, abstractmethod
 
-from functions.src.models.entity import Entity
-from functions.src.models.graph import Graph
-from functions.src.models.movement_types import MovementTypes
-from functions.src.models.path import Path
-from functions.src.models.position import Position
+from src.models.entity import Entity
+from src.models.graph import Graph
+from src.models.movement_types import MovementTypes
+from src.models.path import Path
+from src.models.position import Position
 
 
 class Agent(ABC, Entity):

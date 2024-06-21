@@ -1,8 +1,8 @@
 """Mocks for the graph."""
 
-from functions.src.models.graph import Graph
-from functions.src.services import level_handler
-from functions.src.utils import level_utils
+from src.models.graph import Graph
+from src.services import level_handler
+from src.utils import level_utils
 
 
 def mock_graph() -> Graph:

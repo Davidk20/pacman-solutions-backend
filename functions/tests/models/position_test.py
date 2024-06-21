@@ -1,6 +1,6 @@
 """Tests for the Position class."""
 
-from functions.src.models.position import Position
+from src.models.position import Position
 
 
 def test_add():

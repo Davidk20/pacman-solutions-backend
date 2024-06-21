@@ -1,12 +1,11 @@
 """Tests for the Pac-man Agent."""
 
 import pytest
+from src import exceptions
+from src.models.agents.agent import Agent
+from src.models.agents.pacman_agent import PacmanAgent
+from src.models.pickups import Orange, PowerPellet
 from tests.mocks.mock_agent_test import mock_ghost
-
-from functions.src import exceptions
-from functions.src.models.agents.agent import Agent
-from functions.src.models.agents.pacman_agent import PacmanAgent
-from functions.src.models.pickups import Orange, PowerPellet
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

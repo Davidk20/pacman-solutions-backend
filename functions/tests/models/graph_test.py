@@ -1,14 +1,13 @@
 """Tests for the Graph class."""
 
 import pytest
-
-from functions.src import exceptions
-from functions.src.models import pickups
-from functions.src.models.agents.pacman_agent import PacmanAgent
-from functions.src.models.graph import Graph
-from functions.src.models.node import Node
-from functions.src.models.path import Path
-from functions.src.models.position import Position
+from src import exceptions
+from src.models import pickups
+from src.models.agents.pacman_agent import PacmanAgent
+from src.models.graph import Graph
+from src.models.node import Node
+from src.models.path import Path
+from src.models.position import Position
 
 # pylint: disable=redefined-outer-name
 # fixtures causing error but this is the expected use.

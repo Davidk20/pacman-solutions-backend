@@ -12,7 +12,7 @@ import sys
 from main import app
 from src.scripts.analytics import PacmanAnalytics
 from src.services.game_manager import GameManager, RunConfiguration
-from src.utils.agent_utils import gen_agents
+from src.utils.generators import gen_agent
 
 try:
     print("")
@@ -74,7 +74,8 @@ def main():
     )
 
     local_options.add_argument(
-        "agent",
+        "-a",
+        "--agent",
         choices=["adventurous", "greedy", "inactive", "informed", "unplanned"],
         default="informed",
         help="Choose the agent you wish to use.",
@@ -106,7 +107,7 @@ def main():
                 args.level,
                 configuration=RunConfiguration.LOCAL,
                 verbose=args.verbose,
-                custom_pacman=gen_agents(args.agent),
+                custom_pacman=gen_agent(args.agent),
             )
             game.game_loop()
         case "flask":

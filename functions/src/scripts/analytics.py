@@ -1,14 +1,16 @@
 """Analytics tool designed to compare the performance of various agents."""
 
+import threading
 import time
 from typing import Type
 
-from functions.src.models.agents.custom_agents.greedy import GreedyPacMan
-from functions.src.models.agents.custom_agents.inactive import InactivePacMan
-from functions.src.models.agents.custom_agents.informed import InformedPacMan
-from functions.src.models.agents.custom_agents.unplanned import UnplannedPacMan
-from functions.src.models.agents.pacman_agent import PacmanAgent
-from functions.src.services import game_manager
+from src.models.agents.custom_agents.adventurous import AdventurousPacMan
+from src.models.agents.custom_agents.greedy import GreedyPacMan
+from src.models.agents.custom_agents.inactive import InactivePacMan
+from src.models.agents.custom_agents.informed import InformedPacMan
+from src.models.agents.custom_agents.unplanned import UnplannedPacMan
+from src.models.agents.pacman_agent import PacmanAgent
+from src.services import game_manager
 
 
 class PacmanAnalytics:
@@ -36,33 +38,50 @@ class PacmanAnalytics:
             UnplannedPacMan,
             InformedPacMan,
             GreedyPacMan,
+            AdventurousPacMan,
         ] + custom_agents
         self.results = {}
         self.run_models()
         self.render_data()
 
-    def run_models(self):
-        """Run the models and collect the data."""
-        for agent in self.agents:
-            runs: list[dict] = []
-            for _ in range(self.runs):
-                start_time = time.time()
-                game = game_manager.GameManager(
-                    1, game_manager.RunConfiguration.ANALYTIC, custom_pacman=agent
-                )
+    def run_model(self, agent: Type[PacmanAgent]):
+        """Set up and run a single model."""
+        runs: list[dict] = []
+        for i in range(self.runs):
+            print(f"Running {agent.__name__} iteration {i+1}")
+            start_time = time.time()
+            game = game_manager.GameManager(
+                1, game_manager.RunConfiguration.ANALYTIC, custom_pacman=agent
+            )
+            try:
                 results = game.game_loop()
                 results["time_real"] = time.time() - start_time
                 runs.append(results)
-            self.results[agent.__name__] = runs
+            except IndexError:
+                print(f"{agent.__name__} run {i+1} failed.")
+        self.results[agent.__name__] = runs
+
+    def run_models(self):
+        """Run the models and collect the data."""
+        runs: list[threading.Thread] = []
+        for agent in self.agents:
+            runs.append(
+                threading.Thread(
+                    target=self.run_model, args=(agent,), name=agent.__name__
+                )
+            )
+        for run in runs:
+            run.start()
+        for run in runs:
+            run.join()
 
     def render_data(self):
         """Use the data to render a comparison of models."""
         print("############################")
         print("RUN COMPLETE")
         print("############################")
-        print(f"\nAfter {self.runs} runs:\n")
         for agent, data in self.results.items():
-            print(agent)
+            print(f"{agent} - {len(data)} runs")
             avg_time_real = round(
                 (sum((run["time_real"] for run in data)) / self.runs), 4
             )

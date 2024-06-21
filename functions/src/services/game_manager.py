@@ -2,15 +2,14 @@
 
 from enum import Enum
 
-from src.models.agents.custom_agents.informed import InformedPacMan
+from src import exceptions
+from src.models.agents import ghost_agent
+from src.models.agents.custom_agents.adventurous import AdventurousPacMan
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.agents.placeholder_agent import PlaceholderAgent
 from src.models.game_state import GameState
 from src.models.game_state_store import GameStateStore
 from src.models.graph import Graph
-
-from src import exceptions
-from src.models.agents import ghost_agent
 from src.services import level_handler
 from src.utils import game_utils, level_utils
 
@@ -28,11 +27,14 @@ class GameManager:
     Service which manages the overall running of the game.
     """
 
+    # pylint: disable=too-many-instance-attributes
+    # Nine required for game instantiation.
+
     def __init__(
         self,
         level_num: int,
         configuration: RunConfiguration,
-        custom_pacman: type[PacmanAgent] = InformedPacMan,
+        custom_pacman: type[PacmanAgent] = AdventurousPacMan,
         verbose: bool = False,
     ) -> None:
         """
@@ -84,18 +86,18 @@ class GameManager:
         """The graph containing the game."""
         self.running = False
         """Indicates whether the game is currently running."""
-        self.agent_home = level_handler.get_homes(level_num)
+        agent_home = level_handler.get_homes(level_num)
         """Dictionary containing the homes of the agents."""
         self.respawn = level_handler.get_respawn_points(level_num)
         """Dictionary containing the agents respawn points."""
-        self.pacman = custom_pacman(self.agent_home["pacman"], self.respawn["pacman"])
+        self.pacman = custom_pacman(agent_home["pacman"], self.respawn["pacman"])
         """Representation of the Pac-Man agent."""
         self.agents: list[PacmanAgent | ghost_agent.GhostAgent] = [
             self.pacman,
-            ghost_agent.BlinkyAgent(self.agent_home["blinky"], self.respawn["blinky"]),
-            ghost_agent.PinkyAgent(self.agent_home["pinky"], self.respawn["pinky"]),
-            ghost_agent.InkyAgent(self.agent_home["inky"], self.respawn["inky"]),
-            ghost_agent.ClydeAgent(self.agent_home["clyde"], self.respawn["clyde"]),
+            ghost_agent.BlinkyAgent(agent_home["blinky"], self.respawn["blinky"]),
+            ghost_agent.PinkyAgent(agent_home["pinky"], self.respawn["pinky"]),
+            ghost_agent.InkyAgent(agent_home["inky"], self.respawn["inky"]),
+            ghost_agent.ClydeAgent(agent_home["clyde"], self.respawn["clyde"]),
         ]
         """Array containing all of the agents."""
 

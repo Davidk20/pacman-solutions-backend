@@ -28,7 +28,7 @@ def get_levels():
     """
     absolute_path = os.path.dirname(__file__)
     relative_path = "../models/levels.json"
-    raw_levels = open(os.path.join(absolute_path, relative_path))
+    raw_levels = open(os.path.join(absolute_path, relative_path), encoding="utf-8")
     json_data = json.load(raw_levels)
     yield json_data
     raw_levels.close()
@@ -62,10 +62,9 @@ def get_map(level_num: int) -> list[list[int]]:
     :returns: The map data for the desired level
     """
     level = get_level(level_num)
-    if level is None:
-        raise exceptions.LevelNotFoundException(level_num)
-    else:
+    if level is not None:
         return level.get("map")  # type: ignore
+    raise exceptions.LevelNotFoundException(level_num)
 
 
 def get_overview() -> list[str]:
@@ -101,16 +100,16 @@ def get_homes(level_num: int) -> data_types.AgentHomes:
     level: data_types.LevelData = get_level(level_num)
     homes: dict[str, list[list[int]]] = level.get("homes")
     formatted_homes: dict[str, list[Position]] = {}
-    if homes is not None:
-        for agent, home in homes.items():
-            path: list[Position] = []
-            for coord in home:
-                # Ignored type as it is a determined number of args for tuple.
-                path.append(tuple([coord[0], coord[1]]))  # type: ignore
-            formatted_homes[agent] = path
-        return formatted_homes  # type: ignore
-    else:
+    if homes is None:
         raise exceptions.InvalidLevelConfigurationException(level_num)
+
+    for agent, home in homes.items():
+        path: list[Position] = []
+        for coord in home:
+            # Ignored type as it is a determined number of args for tuple.
+            path.append(tuple([coord[0], coord[1]]))  # type: ignore
+        formatted_homes[agent] = path
+    return formatted_homes  # type: ignore
 
 
 def get_home(level_num: int, agent: str) -> list[Position]:
@@ -159,9 +158,9 @@ def get_respawn_points(level_num: int) -> data_types.AgentRespawn:
     points: dict[str, list[list[int]]] = level.get("respawn")
     formatted_points: dict[str, Position] = {}
 
-    if points is not None:
-        for agent, point in points.items():
-            formatted_points[agent] = Position(point[0], point[1])  # type: ignore
-        return formatted_points  # type: ignore
-    else:
+    if points is None:
         raise exceptions.InvalidLevelConfigurationException(level_num)
+
+    for agent, point in points.items():
+        formatted_points[agent] = Position(point[0], point[1])  # type: ignore
+    return formatted_points  # type: ignore

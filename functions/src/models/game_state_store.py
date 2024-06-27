@@ -71,5 +71,9 @@ class GameStateStore:
                     "score": state.score,
                 }
             )
-        json = {"states": states}
+        json = {
+            "states": states,
+            "score": self.store[-1].score,
+            "time": self.store[-1].time,
+        }
         return json

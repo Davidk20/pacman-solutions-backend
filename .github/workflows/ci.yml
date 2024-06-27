@@ -42,7 +42,7 @@ jobs:
 
       - name: Lint with PyLint
         run: |
-          pylint functions/* --disable=E0401,R0903
+          pylint functions/*.py --disable=E0401,R0903
 
       - name: Test with PyTest
         run: |

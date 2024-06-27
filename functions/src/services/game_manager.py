@@ -43,13 +43,6 @@ class GameManager:
         The game manager is responsible for building the game with all requirements
         and then running the game, managing its iteration and win / loss conditions.
 
-        There are two run configurations: `local` and `server`. If `GameManager`
-        is run locally, this refers to it being run using the
-        `if __name__ == "__main__"` call. In this case, the outputs of simulations
-        should be printed to the terminal. If `GameManager` is being run by the
-        server then all output should be returned so that it can be passed back
-        in server messages.
-
         Parameters
         ----------
         `level_num` : `int`
@@ -59,9 +52,6 @@ class GameManager:
         `custom_pacman` : `type[PacmanAgent]`
             The custom agent to be injected into the game.
             The default is `InformedPacMan`.
-        `local` : `bool` DEFAULT = `False`
-            Whether the game is being run locally or as a server call. Used to
-            indicate whether output should be printed or not.
         `verbose` : `bool` DEFAULT = `False`
             If `True`, the verbose output will be displayed
         """
@@ -197,7 +187,11 @@ class GameManager:
                 self.pacman.score,
             )
         )
-        return self.handle_end()
+
+        if self.configuration == RunConfiguration.LOCAL:
+            self.print_end()
+
+        return self.state_store.to_json()
 
     def print_current_state(self) -> None:
         """
@@ -215,31 +209,21 @@ class GameManager:
         for agent in self.agents:
             print(f"{agent.name}:\n\tpos: {agent.position}\n\tpath: {agent.path}")
 
-    def handle_end(self, ghost: ghost_agent.GhostAgent = None) -> dict:  # type: ignore
+    def print_end(self, ghost: ghost_agent.GhostAgent = None) -> None:  # type: ignore
         """
-        Handles the end of the game.
+        Print the end state.
 
         Parameters
         ----------
         `ghost` : `GhostAgent`
             The ghost which defeated Pac-Man - if applicable.
         """
-
-        match self.configuration:
-            case RunConfiguration.LOCAL:
-                print("##############################")
-                print("GAME OVER")
-                print("##############################")
-                print(f"Time: {self.timer}")
-                print(f"Pac-Man score: {self.pacman.score}")
-                if ghost:
-                    print(f"{ghost.name} caught Pac-Man at {self.pacman.position}")
-                if self.verbose:
-                    self.print_current_state()
-                return self.state_store.to_json()
-
-            case RunConfiguration.SERVER:
-                return self.state_store.to_json()
-
-            case RunConfiguration.ANALYTIC:
-                return {"time_game": self.timer, "score": self.pacman.score}
+        print("##############################")
+        print("GAME OVER")
+        print("##############################")
+        print(f"Time: {self.timer}")
+        print(f"Pac-Man score: {self.pacman.score}")
+        if ghost:
+            print(f"{ghost.name} caught Pac-Man at {self.pacman.position}")
+        if self.verbose:
+            self.print_current_state()

@@ -1,6 +1,10 @@
-from src.models import pickups
+"""Model representing a single path."""
+
+from src.exceptions import InvalidNodeException
 from src.models.environment import EnvironmentEntity
 from src.models.node import Node
+from src.models.pickups import Pickup
+from src.models.position import Position
 
 
 class Path:
@@ -17,8 +21,7 @@ class Path:
     def __repr__(self) -> str:
         if len(self.route) > 0:
             return f"Path from {self.route[0].position} to {self.route[-1].position}"
-        else:
-            return "Empty Path"
+        return "Empty Path"
 
     def __len__(self) -> int:
         return len(self.route)
@@ -44,9 +47,7 @@ class Path:
             # Starts from second index to ignore agent in first position.
             if node.empty():
                 continue
-            if not node.contains(pickups.Pickup) and not node.contains(
-                EnvironmentEntity
-            ):
+            if not node.contains(Pickup) and not node.contains(EnvironmentEntity):
                 return False
         return True
 
@@ -70,9 +71,10 @@ class Path:
         """
         score = 0
         for node in self.route:
-            if not node.empty():
-                if isinstance(node.get_lower_entity(), pickups.Pickup):
-                    score += node.get_lower_entity().score()
+            try:
+                score += node.get_entity(Pickup).score
+            except InvalidNodeException:
+                pass
         return score
 
     def get_next_pos(self) -> Node:
@@ -85,14 +87,14 @@ class Path:
         """
         return self.route.pop(0)
 
-    def backwards(self, history: list[tuple[int, int]]) -> bool:
+    def backwards(self, history: list[Position]) -> bool:
         """
         Check whether the agent would be moving backward's by traversing
         this path.
 
         Parameters
         ----------
-        `history` : `list[tuple[int, int]]`
+        `history` : `list[Position]`
             The path history of the agent.
 
         Returns
@@ -101,5 +103,4 @@ class Path:
         """
         if len(history) > 1:
             return self.route[1].position in history[-2:]
-        else:
-            return False
+        return False

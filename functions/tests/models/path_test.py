@@ -4,7 +4,11 @@ import pytest
 from src.models import environment, pickups
 from src.models.node import Node
 from src.models.path import Path
+from src.models.position import Position
 from tests.mocks.mock_agent_test import mock_ghost
+
+# pylint: disable=redefined-outer-name
+# fixtures causing error but this is the expected use.
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -42,6 +46,19 @@ def path_with_agents():
     yield path
 
 
+@pytest.fixture(scope="function", autouse=True)
+def backwards_path():
+    """Generate a path for testing containing no agents."""
+    nodes = [
+        Node((0, 1), pickups.PowerPellet()),
+        Node((0, 0), pickups.PacDot()),
+        Node((0, 3), environment.Teleporter()),
+        Node((0, 2), pickups.Empty()),
+    ]
+    path = Path(nodes)
+    yield path
+
+
 def test_safe_path(path_no_agents: Path):
     """Checks that paths are marked safe."""
     assert path_no_agents.is_safe()
@@ -59,12 +76,11 @@ def test_path_cost(path_no_agents: Path):
 
 def test_get_next_pos(path_no_agents: Path):
     """Checks that getting the next position is correctly handled."""
-    assert path_no_agents.get_next_pos().position == (0, 0)
+    assert path_no_agents.get_next_pos().position == Position(0, 0)
     assert len(path_no_agents) == 7
 
 
-def test_backwards(path_no_agents: Path):
+def test_backwards(backwards_path: Path):
     """Checks that a backwards path is identified."""
-    history: list[tuple[int, int]] = [(0, 0), (0, 1)]
-    print(history[-2:])
-    assert path_no_agents.backwards(history)
+    history: list[Position] = [Position(0, 0), Position(0, 1)]
+    assert backwards_path.backwards(history)

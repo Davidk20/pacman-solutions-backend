@@ -1,43 +1,23 @@
 """Model representing all entities within the game."""
 
+from dataclasses import dataclass
 
+
+@dataclass
 class Entity:
-    def __init__(self, name: str, score: int = 0, value: int = 999) -> None:
-        """
-        Initialise an Entity.
+    """Model representing all entities within the game."""
 
-        Parameters
-        ----------
-        `name` : `str`
-            The name of the entity.
-        `score` : `int`
-            The score the entity has.
-        `value` : `int`
-            The agent's representation within the array.
-        """
-        self._name = name
-        """The name of the entity."""
-        self._score = score
-        """The score the entity has."""
-        self._value = value
-        """The agent's representation within the array."""
+    name: str
+    """The name of the entity."""
+    score: int = 0
+    """The score the entity has."""
+    value: int = 999
+    """The agent's representation within the array."""
 
     def __repr__(self) -> str:
-        return f"""(Name: {self._name}, Score: {self._score}, Value: {self._value})"""
+        return f"""(Name: {self.name}, Score: {self.score}, Value: {self.value})"""
 
     def __eq__(self, __value: object) -> bool:
-        if not isinstance(__value, Entity):
+        if not isinstance(__value, Entity):  # pylint: disable=W0143
             return False
-        return self.name == __value.name() and self._value == __value.value()
-
-    def name(self) -> str:
-        """Return the entities name."""
-        return self._name
-
-    def score(self) -> int:
-        """Return the entities score."""
-        return self._score
-
-    def value(self) -> int:
-        """Return the entities name."""
-        return self._value
+        return self.name == __value.name and self.value == __value.value

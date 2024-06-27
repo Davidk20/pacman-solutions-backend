@@ -14,6 +14,7 @@ import os
 
 from src import exceptions
 from src.models import data_types
+from src.models.position import Position
 
 
 def get_levels():
@@ -25,9 +26,16 @@ def get_levels():
     -------
     A `dict` object containing the levels and their data.
     """
+
+    # pylint: disable=R1732
+    # 'with' opening not suitable here for use case.
+
     absolute_path = os.path.dirname(__file__)
     relative_path = "../models/levels.json"
-    raw_levels = open(os.path.join(absolute_path, relative_path))
+    raw_levels = open(
+        os.path.join(absolute_path, relative_path),
+        encoding="utf-8",
+    )
     json_data = json.load(raw_levels)
     yield json_data
     raw_levels.close()
@@ -61,10 +69,9 @@ def get_map(level_num: int) -> list[list[int]]:
     :returns: The map data for the desired level
     """
     level = get_level(level_num)
-    if level is None:
-        raise exceptions.LevelNotFoundException(level_num)
-    else:
+    if level is not None:
         return level.get("map")  # type: ignore
+    raise exceptions.LevelNotFoundException(level_num)
 
 
 def get_overview() -> list[str]:
@@ -99,20 +106,20 @@ def get_homes(level_num: int) -> data_types.AgentHomes:
     """
     level: data_types.LevelData = get_level(level_num)
     homes: dict[str, list[list[int]]] = level.get("homes")
-    formatted_homes: dict[str, list[tuple[int, int]]] = {}
-    if homes is not None:
-        for agent, home in homes.items():
-            path: list[tuple[int, int]] = []
-            for coord in home:
-                # Ignored type as it is a determined number of args for tuple.
-                path.append(tuple([coord[0], coord[1]]))  # type: ignore
-            formatted_homes[agent] = path
-        return formatted_homes  # type: ignore
-    else:
+    formatted_homes: dict[str, list[Position]] = {}
+    if homes is None:
         raise exceptions.InvalidLevelConfigurationException(level_num)
 
+    for agent, home in homes.items():
+        path: list[Position] = []
+        for coord in home:
+            # Ignored type as it is a determined number of args for tuple.
+            path.append(tuple([coord[0], coord[1]]))  # type: ignore
+        formatted_homes[agent] = path
+    return formatted_homes  # type: ignore
 
-def get_home(level_num: int, agent: str) -> list[tuple[int, int]]:
+
+def get_home(level_num: int, agent: str) -> list[Position]:
     """
     Returns the home path for a given agent.
 
@@ -129,7 +136,7 @@ def get_home(level_num: int, agent: str) -> list[tuple[int, int]]:
     follow when returning "home".
     """
     homes = get_homes(level_num)
-    home: list[tuple[int, int]] = []
+    home: list[Position] = []
     agent_home = homes[agent.lower()]
     if agent_home is not None:
         for coord in agent_home:
@@ -156,11 +163,11 @@ def get_respawn_points(level_num: int) -> data_types.AgentRespawn:
     """
     level: data_types.LevelData = get_level(level_num)
     points: dict[str, list[list[int]]] = level.get("respawn")
-    formatted_points: dict[str, tuple[int, int]] = {}
+    formatted_points: dict[str, Position] = {}
 
-    if points is not None:
-        for agent, point in points.items():
-            formatted_points[agent] = tuple([point[0], point[1]])  # type: ignore
-        return formatted_points  # type: ignore
-    else:
+    if points is None:
         raise exceptions.InvalidLevelConfigurationException(level_num)
+
+    for agent, point in points.items():
+        formatted_points[agent] = Position(point[0], point[1])  # type: ignore
+    return formatted_points  # type: ignore

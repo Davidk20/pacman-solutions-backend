@@ -4,6 +4,7 @@ from src import constants
 from src.exceptions import NodeNotFoundException
 from src.models.graph import Graph
 from src.models.node import Node
+from src.models.position import Position
 from src.utils.entity_utils import EntityNotFoundException, convert_value_to_entity
 
 
@@ -38,8 +39,8 @@ def array_to_graph(level: list[list[int]]) -> Graph:
     height = len(level)
     width = len(level[0])
     # queue to store the positions to be looked into
-    queue: list[tuple[int, int]] = [first_non_wall_node(level)]
-    adjacency_list: dict[tuple[int, int], list[tuple[int, int]]] = {}
+    queue: list[Position] = [first_non_wall_node(level)]
+    adjacency_list: dict[Position, list[Position]] = {}
     graph = Graph()
 
     while len(queue) > 0:
@@ -49,21 +50,15 @@ def array_to_graph(level: list[list[int]]) -> Graph:
         if (
             not in_bounds(height, width, current)
             or is_wall(level, current)
-            or current in adjacency_list.keys()
+            or current in adjacency_list
         ):
             continue
 
         # if is valid space then build node and add adjacents
-        entity = convert_value_to_entity(level[current[1]][current[0]])
-        graph.add_node(Node(current, entity))
+        entity = convert_value_to_entity(level[current.y][current.x])
+        graph.add_node(Node(current.to_tuple(), entity))
         adjacency_list[current] = []
-        expansions = [
-            (current[0] + 1, current[1]),
-            (current[0], current[1] + 1),
-            (current[0], current[1] - 1),
-            (current[0] - 1, current[1]),
-        ]
-        for expansion in expansions:
+        for expansion in current.expand():
             if in_bounds(height, width, expansion):
                 if not is_wall(level, expansion):
                     adjacency_list[current].append(expansion)
@@ -90,18 +85,18 @@ def graph_to_array(graph: Graph) -> list[list[int]]:
         level.append([])
         for column in range(constants.PACMAN_BOARD_WIDTH):
             try:
-                node = graph.find_node_by_pos((column, row))
+                node = graph.find_node_by_pos(Position(column, row))
                 if node.empty():
                     level[row].append(0)
                 else:
-                    level[row].append(node.get_higher_entity().value())
+                    level[row].append(node.get_higher_entity().value)
             except NodeNotFoundException:
                 level[row].append(99)
                 continue
     return level
 
 
-def in_bounds(height: int, width: int, pos: tuple[int, int]) -> bool:
+def in_bounds(height: int, width: int, pos: Position) -> bool:
     """
     Check a position is within the bounds of the map.
 
@@ -111,51 +106,51 @@ def in_bounds(height: int, width: int, pos: tuple[int, int]) -> bool:
         The height of the map.
     `width` : `int`
         The width of the map.
-    `pos` : `tuple[int, int]`
+    `pos` : `Position`
         The position to check
 
     Returns
     -------
     `True` if the position is within bounds.
     """
-    return pos[0] >= 0 and pos[0] < width and pos[1] >= 0 and pos[1] < height
+    return pos.x >= 0 and pos.x < width and pos.y >= 0 and pos.y < height
 
 
-def is_wall(map: list[list[int]], pos: tuple[int, int]) -> bool:
+def is_wall(level: list[list[int]], pos: Position) -> bool:
     """
     Checks if the specified space is a `Wall`.
 
     Parameters
     ----------
-    `map` : `list[list[int]]`
+    `level` : `list[list[int]]`
         The level to use as reference.
-    `pos` : `tuple[int, int]`
+    `pos` : `Position`
         The position to check.
 
     Returns
     -------
     `True` if the space is filled with a wall.
     """
-    return map[pos[1]][pos[0]] == 99
+    return level[pos.y][pos.x] == 99
 
 
-def first_non_wall_node(map: list[list[int]]) -> tuple[int, int]:
+def first_non_wall_node(level: list[list[int]]) -> Position:
     """
-    Find and return the first position within the map.
+    Find and return the first position within the level.
 
     This should be the upper-leftmost node which is not a wall.
 
     Parameters
     ----------
-    `map` : `list[list[int]]`
+    `level` : `list[list[int]]`
         The level to search.
 
     Returns
     -------
     The position of the first non-wall node.
     """
-    for y in range(len(map)):
-        for x in range(len(map[0])):
-            if map[y][x] != 99:
-                return (x, y)
+    for y, row in enumerate(level):
+        for x, col in enumerate(row):
+            if col != 99:
+                return Position(x, y)
     raise EntityNotFoundException("No non-wall nodes found.")

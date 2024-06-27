@@ -27,6 +27,9 @@ class GameManager:
     Service which manages the overall running of the game.
     """
 
+    # pylint: disable=too-many-instance-attributes
+    # Nine required for game instantiation.
+
     def __init__(
         self,
         level_num: int,
@@ -40,13 +43,6 @@ class GameManager:
         The game manager is responsible for building the game with all requirements
         and then running the game, managing its iteration and win / loss conditions.
 
-        There are two run configurations: `local` and `server`. If `GameManager`
-        is run locally, this refers to it being run using the
-        `if __name__ == "__main__"` call. In this case, the outputs of simulations
-        should be printed to the terminal. If `GameManager` is being run by the
-        server then all output should be returned so that it can be passed back
-        in server messages.
-
         Parameters
         ----------
         `level_num` : `int`
@@ -56,9 +52,6 @@ class GameManager:
         `custom_pacman` : `type[PacmanAgent]`
             The custom agent to be injected into the game.
             The default is `InformedPacMan`.
-        `local` : `bool` DEFAULT = `False`
-            Whether the game is being run locally or as a server call. Used to
-            indicate whether output should be printed or not.
         `verbose` : `bool` DEFAULT = `False`
             If `True`, the verbose output will be displayed
         """
@@ -83,18 +76,18 @@ class GameManager:
         """The graph containing the game."""
         self.running = False
         """Indicates whether the game is currently running."""
-        self.agent_home = level_handler.get_homes(level_num)
+        agent_home = level_handler.get_homes(level_num)
         """Dictionary containing the homes of the agents."""
         self.respawn = level_handler.get_respawn_points(level_num)
         """Dictionary containing the agents respawn points."""
-        self.pacman = custom_pacman(self.agent_home["pacman"], self.respawn["pacman"])
+        self.pacman = custom_pacman(agent_home["pacman"], self.respawn["pacman"])
         """Representation of the Pac-Man agent."""
         self.agents: list[PacmanAgent | ghost_agent.GhostAgent] = [
             self.pacman,
-            ghost_agent.BlinkyAgent(self.agent_home["blinky"], self.respawn["blinky"]),
-            ghost_agent.PinkyAgent(self.agent_home["pinky"], self.respawn["pinky"]),
-            ghost_agent.InkyAgent(self.agent_home["inky"], self.respawn["inky"]),
-            ghost_agent.ClydeAgent(self.agent_home["clyde"], self.respawn["clyde"]),
+            ghost_agent.BlinkyAgent(agent_home["blinky"], self.respawn["blinky"]),
+            ghost_agent.PinkyAgent(agent_home["pinky"], self.respawn["pinky"]),
+            ghost_agent.InkyAgent(agent_home["inky"], self.respawn["inky"]),
+            ghost_agent.ClydeAgent(agent_home["clyde"], self.respawn["clyde"]),
         ]
         """Array containing all of the agents."""
 
@@ -106,7 +99,7 @@ class GameManager:
         """
         for placeholder in self.game.find_node_by_entity(PlaceholderAgent):
             for ag in self.agents:
-                if placeholder.get_higher_entity().value() == ag.value():
+                if placeholder.get_higher_entity().value == ag.value:
                     placeholder.remove_entity(placeholder.get_higher_entity())
                     placeholder.add_entity(ag)
                     break
@@ -135,14 +128,14 @@ class GameManager:
         """Increments the game time and processes all time based events."""
         level_array = level_utils.graph_to_array(self.game)
         self.state_store.add(
-            GameState(
-                self.timer, level_array, self.pacman.energized, self.pacman.score()
-            )
+            GameState(self.timer, level_array, self.pacman.energized, self.pacman.score)
         )
         if self.win() or self.lost():
             self.running = False
-        else:
-            self.timer += 1
+            return
+
+        self.timer += 1
+        self.pacman.handle_energised()
         for ag in self.agents:
             try:
                 ag.position = self.game.find_node_by_entity(type(ag))[0].position
@@ -159,11 +152,12 @@ class GameManager:
                         ghost.ghost.handle_capture()
                         self.game.move_agent(
                             collision.node.position,
-                            self.respawn[ghost.ghost.name().lower()],
-                            type(ghost.ghost),
+                            self.respawn[ghost.ghost.name.lower()],
+                            ghost_agent.GhostAgent,
                         )
             except IndexError as e:
-                print(f"{ag} - {e}")
+                if self.verbose:
+                    self.print_error_state(e)
                 self.running = False
                 raise
 
@@ -190,10 +184,14 @@ class GameManager:
                 self.timer,
                 level_utils.graph_to_array(self.game),
                 self.pacman.energized,
-                self.pacman.score(),
+                self.pacman.score,
             )
         )
-        return self.handle_end()
+
+        if self.configuration == RunConfiguration.LOCAL:
+            self.print_end()
+
+        return self.state_store.to_json()
 
     def print_current_state(self) -> None:
         """
@@ -204,31 +202,28 @@ class GameManager:
         print(f"Iteration {self.timer}")
         print(level_utils.print_level(level_utils.graph_to_array(self.game)))
 
-    def handle_end(self, ghost: ghost_agent.GhostAgent = None) -> dict:  # type: ignore
+    def print_error_state(self, error) -> None:
+        """Print the state surrounding an error."""
+        print(f"Simulation: {type(self.pacman).__name__} - Iteration {self.timer}")
+        print(f"ERROR - {error}")
+        for agent in self.agents:
+            print(f"{agent.name}:\n\tpos: {agent.position}\n\tpath: {agent.path}")
+
+    def print_end(self, ghost: ghost_agent.GhostAgent = None) -> None:  # type: ignore
         """
-        Handles the end of the game.
+        Print the end state.
 
         Parameters
         ----------
         `ghost` : `GhostAgent`
             The ghost which defeated Pac-Man - if applicable.
         """
-
-        match self.configuration:
-            case RunConfiguration.LOCAL:
-                print("##############################")
-                print("GAME OVER")
-                print("##############################")
-                print(f"Time: {self.timer}")
-                print(f"Pac-Man score: {self.pacman.score()}")
-                if ghost:
-                    print(f"{ghost.name()} caught Pac-Man at {self.pacman.position}")
-                if self.verbose:
-                    self.print_current_state()
-                return self.state_store.to_json()
-
-            case RunConfiguration.SERVER:
-                return self.state_store.to_json()
-
-            case RunConfiguration.ANALYTIC:
-                return {"time_game": self.timer, "score": self.pacman.score()}
+        print("##############################")
+        print("GAME OVER")
+        print("##############################")
+        print(f"Time: {self.timer}")
+        print(f"Pac-Man score: {self.pacman.score}")
+        if ghost:
+            print(f"{ghost.name} caught Pac-Man at {self.pacman.position}")
+        if self.verbose:
+            self.print_current_state()

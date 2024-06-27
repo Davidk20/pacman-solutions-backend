@@ -6,14 +6,19 @@ from src.models.agents.placeholder_agent import PlaceholderAgent
 from src.models.node import Node
 from src.models.pickups import Empty, PacDot
 
+# pylint: disable=redefined-outer-name
+# fixtures causing error but this is the expected use.
+
 
 @pytest.fixture(scope="function", autouse=True)
 def empty_node():
+    """Fixture to mock an empty node."""
     yield Node((0, 0), Empty())
 
 
 @pytest.fixture(scope="function", autouse=True)
 def pickup_node():
+    """Fixture to mock a node containing a Pickup"""
     yield Node((0, 0), PacDot())
 
 
@@ -72,7 +77,7 @@ def test_get_higher_agent(empty_node: Node):
     """Test that the higher agent is returned when the node contains two agents."""
     empty_node.add_entity(PlaceholderAgent("", 0))
     empty_node.add_entity(PlaceholderAgent("", 1))
-    assert empty_node.get_higher_entity().value() == 1
+    assert empty_node.get_higher_entity().value == 1
 
 
 def test_get_lower_entity(pickup_node: Node):
@@ -85,7 +90,7 @@ def test_get_lower_agent(empty_node: Node):
     """Test that the lower agent is returned when the node contains two agents."""
     empty_node.add_entity(PlaceholderAgent("", 0))
     empty_node.add_entity(PlaceholderAgent("", 1))
-    assert empty_node.get_lower_entity().value() == 0
+    assert empty_node.get_lower_entity().value == 0
 
 
 def test_get_empty_entity(empty_node: Node):
@@ -95,16 +100,19 @@ def test_get_empty_entity(empty_node: Node):
 
 
 def test_get_specific_pickup(empty_node: Node):
+    """Test ability to pickup a specific node."""
     empty_node.add_entity(PacDot())
     assert isinstance(empty_node.get_entity(PacDot), PacDot)
 
 
 def test_get_specific_agent(empty_node: Node):
+    """Test ability to get a specific agent from a node."""
     empty_node.add_entity(PacDot())
     empty_node.add_entity(PlaceholderAgent("", 0))
     assert isinstance(empty_node.get_entity(PlaceholderAgent), PlaceholderAgent)
 
 
 def test_get_specific_not_found(empty_node: Node):
+    """Test that exception correctly raised when entity not found."""
     with pytest.raises(exceptions.InvalidNodeException):
         empty_node.get_entity(PacDot)

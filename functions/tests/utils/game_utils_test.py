@@ -6,15 +6,19 @@ from src.models import environment, pickups
 from src.models.agents import ghost_agent
 from src.models.agents.pacman_agent import PacmanAgent
 from src.models.node import Node
+from src.models.position import Position
 from src.utils import game_utils
 from tests.mocks import mock_agent_test
+
+# pylint: disable=redefined-outer-name
+# fixtures causing error but this is the expected use.
 
 
 @pytest.fixture(scope="function")
 def agent_teleporter_node():
     """Returns a node containing an agent and a teleporter."""
     e1 = environment.Teleporter()
-    e2 = PacmanAgent([], (0, 0))
+    e2 = PacmanAgent([], Position(0, 0))
     node: Node = Node((0, 0), e1)
     node.add_entity(e2)
     yield node
@@ -34,7 +38,7 @@ def ghost_pickup_node():
 def higher_pacman_ghost_node():
     """Returns a node with a ghost and Pac-Man in the higher position."""
     e1 = mock_agent_test.mock_ghost()
-    e2 = PacmanAgent([], (0, 0))
+    e2 = PacmanAgent([], Position(0, 0))
     node: Node = Node((0, 0), e1)
     node.add_entity(e2)
     yield node
@@ -43,7 +47,7 @@ def higher_pacman_ghost_node():
 @pytest.fixture(scope="function")
 def lower_pacman_ghost_node():
     """Returns a node with a ghost and Pac-Man in the lower position."""
-    e1 = PacmanAgent([], (0, 0))
+    e1 = PacmanAgent([], Position(0, 0))
     e2 = mock_agent_test.mock_ghost()
     node: Node = Node((0, 0), e1)
     node.add_entity(e2)

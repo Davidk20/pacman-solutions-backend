@@ -1,3 +1,5 @@
+"""The server scripts."""
+
 from firebase_admin import initialize_app
 from firebase_functions import https_fn, options
 from flask import Flask, jsonify, request
@@ -24,6 +26,9 @@ approved = [
 )
 @app.get("/get_levels")
 def get_levels(req: https_fn.Request = None) -> https_fn.Response:  # type: ignore
+    # pylint: disable=unused-argument
+    # requirement of cloud functions.
+    """Return all levels as an overview."""
     return jsonify(level_handler.get_overview())
 
 
@@ -35,6 +40,7 @@ def get_levels(req: https_fn.Request = None) -> https_fn.Response:  # type: igno
 )
 @app.get("/get_game")
 def get_game(req: https_fn.Request = None) -> https_fn.Response:  # type: ignore
+    """Simulate a single game."""
     if req:
         level_num = int(req.args.get("level_num"))  # type: ignore
     else:
@@ -44,6 +50,6 @@ def get_game(req: https_fn.Request = None) -> https_fn.Response:  # type: ignore
             level_num, configuration=game_manager.RunConfiguration.SERVER
         )
         message = game.game_loop()
-    except Exception as e:
+    except Exception as e:  # pylint: disable=W0718
         message = str(e)
     return jsonify(message)

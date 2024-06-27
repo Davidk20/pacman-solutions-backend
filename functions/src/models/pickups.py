@@ -6,21 +6,6 @@ from src.models.entity import Entity
 class Pickup(Entity):
     """Parent class representing a generic Pickup item."""
 
-    def __init__(self, name: str, score: int, value: int) -> None:
-        """
-        Initialise an Pickup.
-
-        Parameters
-        ----------
-        `name` : `str`
-            The name of the entity.
-        `score` : `int`
-            The score the entity has.
-        `value` : `int`
-            The agent's representation within the array.
-        """
-        super().__init__(name, score, value)
-
 
 class Empty(Pickup):
     """`Pickup` class representing an empty space."""

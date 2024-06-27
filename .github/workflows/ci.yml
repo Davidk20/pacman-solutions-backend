@@ -40,6 +40,10 @@ jobs:
         run: |
           black --check --line-length 88 .
 
+      - name: Lint with PyLint
+        run: |
+          pylint functions/*.py --disable=E0401,R0903
+
       - name: Test with PyTest
         run: |
           pytest functions/

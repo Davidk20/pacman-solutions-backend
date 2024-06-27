@@ -2,9 +2,10 @@
 
 from typing import Type, TypeVar
 
-from src import exceptions
+from src.exceptions import InvalidNodeException
 from src.models.entity import Entity
 from src.models.pickups import Empty, Pickup
+from src.models.position import Position
 
 
 class Node:
@@ -33,7 +34,7 @@ class Node:
         """
         self.visited = False
         """`true` if the node has been visited by the Pac-Man agent."""
-        self.position = position
+        self.position: Position = Position(position[0], position[1])
         """The position of the node in relation to the array-based level."""
         self.entities: list[Entity] = (
             [starting_entity] if not isinstance(starting_entity, Empty) else []
@@ -46,7 +47,7 @@ class Node:
         """
 
     def __repr__(self) -> str:
-        entities = [entity.name() for entity in self.entities]
+        entities = [entity.name for entity in self.entities]
         return f"""\nPosition: {self.position}, Contains: {entities}"""
 
     def __eq__(self, __value: object) -> bool:
@@ -63,7 +64,7 @@ class Node:
 
     def is_collision(self) -> bool:
         """Returns `True` if there is a collision in this `Node`."""
-        return len(self.entities) == 2
+        return len(self.entities) >= 2
 
     def contains(self, entity_type: Type[Entity]) -> bool:
         """Returns `True` if the `Node` contains an entity of the provided type."""
@@ -79,7 +80,7 @@ class Node:
             The entity to add to the `Node`.
         """
         if isinstance(entity, Pickup) and self.contains(Pickup):
-            raise exceptions.InvalidNodeException("Cannot have two pickups in one node")
+            raise InvalidNodeException("Cannot have two pickups in one node")
         self.entities.append(entity)
 
     def remove_entity(self, entity: Entity) -> None:
@@ -93,8 +94,8 @@ class Node:
         """
         try:
             self.entities.remove(entity)
-        except ValueError:
-            raise exceptions.InvalidNodeException(f"Cannot remove {entity.name()}")
+        except ValueError as ve:
+            raise InvalidNodeException(f"Cannot remove {entity.name}") from ve
 
     def get_higher_entity(self) -> Entity:
         """
@@ -149,6 +150,4 @@ class Node:
         for entity in self.entities:
             if isinstance(entity, entity_type):
                 return entity
-        raise exceptions.InvalidNodeException(
-            f"Entity of type {entity_type} not found."
-        )
+        raise InvalidNodeException(f"Entity of type {entity_type} not found.")

@@ -2,6 +2,7 @@
 
 import threading
 import time
+from dataclasses import dataclass
 from typing import Type
 
 from src.models.agents.custom_agents.adventurous import AdventurousPacMan
@@ -10,20 +11,64 @@ from src.models.agents.custom_agents.inactive import InactivePacMan
 from src.models.agents.custom_agents.informed import InformedPacMan
 from src.models.agents.custom_agents.unplanned import UnplannedPacMan
 from src.models.agents.pacman_agent import PacmanAgent
+from src.models.game_state import GameState
 from src.services import game_manager
+from src.services.file_writer import write_to_csv
+
+
+@dataclass
+class RunSnapshot:
+    """Model representing the full analytics data for a single run."""
+
+    name: str
+    """The name of the agent."""
+    run_id: str
+    """The unique ID for the run"""
+    time_seconds: float
+    """The time taken to complete a run in seconds."""
+    time_ticks: int
+    """The time taken to complete a run in internal ticks."""
+    final_score: int
+    """The final score of the run."""
+    states: list[GameState]
+    """The individual states of this run."""
+
+
+@dataclass
+class AgentSnapshot:
+    """Model representing the analytics snapshot of a single agent."""
+
+    name: str
+    """The name of the agent."""
+    snapshots: list[RunSnapshot]
+    """The collection of snapshots."""
+
+    @property
+    def avg_time(self) -> float:
+        """The average time an agent takes to complete."""
+        return sum((run.time_ticks for run in self.snapshots)) / len(self.snapshots)
+
+    @property
+    def avg_real_time(self) -> float:
+        """The average time an agent takes to complete (in seconds)."""
+        return round(
+            sum((run.time_seconds for run in self.snapshots)) / len(self.snapshots), 3
+        )
+
+    @property
+    def avg_score(self) -> float:
+        """The average score an agent achieves."""
+        return sum((run.final_score for run in self.snapshots)) / len(self.snapshots)
 
 
 class PacmanAnalytics:
     """Analytics tool designed to compare the performance of various agents."""
 
     def __init__(
-        self, runs: int = 10, custom_agents: list[Type[PacmanAgent]] = []
+        self, output: bool, runs: int = 10, custom_agents: list[Type[PacmanAgent]] = []
     ):  # pylint: disable=W0102
         """
         Initialise the class.
-
-        - It is assumed that the analytics will be run on the first level as this
-        is the most proven level and the easiest for testing.
 
         Parameters
         ----------
@@ -40,14 +85,19 @@ class PacmanAnalytics:
             GreedyPacMan,
             AdventurousPacMan,
         ] + custom_agents
-        self.results = {}
+        self.results: list[AgentSnapshot] = []
         self.run_models()
         self.render_data()
+        if output:
+            write_to_csv(self.results)
 
     def run_model(self, agent: Type[PacmanAgent]):
         """Set up and run a single model."""
-        runs: list[dict] = []
+        ag_snapshot: AgentSnapshot = AgentSnapshot(agent.__name__, [])
         for i in range(self.runs):
+            snapshot: RunSnapshot = RunSnapshot(
+                agent.__name__, f"{agent.__name__}_{i}", 0, 0, 0, []
+            )
             print(f"Running {agent.__name__} iteration {i+1}")
             start_time = time.time()
             game = game_manager.GameManager(
@@ -55,11 +105,23 @@ class PacmanAnalytics:
             )
             try:
                 results = game.game_loop()
-                results["time_real"] = time.time() - start_time
-                runs.append(results)
+                snapshot.time_seconds = time.time() - start_time
+                snapshot.states = [
+                    GameState(
+                        time=data["time"],
+                        board_state=data["state"],
+                        energised=data["energised"],
+                        score=data["score"],
+                    )
+                    for data in results["states"]
+                ]
+                snapshot.final_score = results["score"]
+                snapshot.time_ticks = results["time"]
+                ag_snapshot.snapshots.append(snapshot)
+                print(f"{agent.__name__} run {i+1} complete.")
             except IndexError:
                 print(f"{agent.__name__} run {i+1} failed.")
-        self.results[agent.__name__] = runs
+        self.results.append(ag_snapshot)
 
     def run_models(self):
         """Run the models and collect the data."""
@@ -80,14 +142,9 @@ class PacmanAnalytics:
         print("############################")
         print("RUN COMPLETE")
         print("############################")
-        for agent, data in self.results.items():
-            print(f"{agent} - {len(data)} runs")
-            avg_time_real = round(
-                (sum((run["time_real"] for run in data)) / self.runs), 4
-            )
-            avg_time_game = sum((run["time_game"] for run in data)) / self.runs
-            avg_score = sum((run["score"] for run in data)) / self.runs
-            print(f"avg time (in seconds) = {avg_time_real}")
-            print(f"avg time (in game) = {avg_time_game}")
-            print(f"avg score = {avg_score}")
+        for agent in self.results:
+            print(f"{agent.name} - {len(agent.snapshots)} runs")
+            print(f"avg time (in seconds) = {agent.avg_real_time}")
+            print(f"avg time (in game) = {agent.avg_time}")
+            print(f"avg score = {agent.avg_score}")
             print("\n")

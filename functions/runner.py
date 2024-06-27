@@ -85,9 +85,8 @@ def main():
 
     analytics_options.add_argument(
         "-o",
-        "--output_file",
-        action="store",
-        type=str,
+        "--output",
+        action="store_true",
         help="write the output data to a file",
     )
 
@@ -113,7 +112,7 @@ def main():
         case "flask":
             app.run(debug=True, port=5001)
         case "analytics":
-            PacmanAnalytics(runs=args.runs)
+            PacmanAnalytics(runs=args.runs, output=args.output)
 
 
 if __name__ == "__main__":
